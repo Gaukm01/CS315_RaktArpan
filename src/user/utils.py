@@ -7,7 +7,7 @@ import bcrypt
 def MAKE_PASSWORD(password):
     password = password.encode()
     hash = bcrypt.hashpw(password, bcrypt.gensalt())
-    return hash.decode()
+    return hash
 
 
 # match password to hashed one

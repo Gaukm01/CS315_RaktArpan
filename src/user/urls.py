@@ -8,6 +8,6 @@ urlpatterns = [
     path("register", views.register_blood_bank, name="register_blood_bank"),
     path("loginUser", views.loginUser, name="loginUser"),
     path("logout", views.logout, name="logout"),
-    path("dashboard",views.blood_bank_dashboard, name="blood_bank_dashboard")
+    path("blood_bank_dashboard",views.blood_bank_dashboard, name="blood_bank_dashboard")
 
 ]
