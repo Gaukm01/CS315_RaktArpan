@@ -6,7 +6,7 @@ from django.utils import timezone
 # Database schemas intilization
 class City (models.Model):
     city_id = models.AutoField(primary_key=True)
-    city_name = models.CharField(max_length=30, blank=False)
+    name = models.CharField(max_length=30, blank=False)
     district = models.CharField(max_length=30, blank=False)
     state = models.CharField(max_length=30, blank=False)
     country = models.CharField(max_length=30, blank=False)

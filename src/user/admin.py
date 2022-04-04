@@ -11,6 +11,7 @@ from user.models import (
     Granulocytes
 )
 
+admin.site.register(City)
 admin.site.register(User)
 admin.site.register(RBC)
 admin.site.register(City)
