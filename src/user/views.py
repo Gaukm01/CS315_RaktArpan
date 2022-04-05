@@ -166,15 +166,92 @@ def blood_bank(request):
     )
 
 def blood_bank_dashboard(request):
-    user = IsLoggedIn(request)
-    if user is None:
-        messages.error(request, "Kindly Login with your Blood Bank Credentials first")
-        return HttpResponseRedirect("/user/loginpage")
-    elif user.roles != "blood_bank":
-        url= role_based_redirection(request)
-        return HttpResponseRedirect(url)
-    else:
-        HttpResponse("User logged in")
-        # data = {"user": None}
-        # data["user"] = user
-        return render(request, "blood_bank_dashboard.html") #,data)
+    # user = IsLoggedIn(request)
+    # if user is None:
+    #     messages.error(request, "Kindly Login with your Blood Bank Credentials first")
+    #     return HttpResponseRedirect("/user/loginpage")
+    # elif user.roles != "blood_bank":
+    #     url= role_based_redirection(request)
+    #     return HttpResponseRedirect(url)
+    # else:
+    #     HttpResponse("User logged in")
+    data = {"items": []}
+    count = 1
+    for t in User.objects.all():
+        if RBC.objects.filter(user=t).exists():
+            rbc = RBC.objects.get(user=t)
+            data["items"].append({
+                's_no': count,
+                'name': t.blood_bank_name,
+                'blood_component' : 'RBC',
+                'blood_group_apstv' : rbc.quantity_ABpstv,
+                'blood_group_angtv' : rbc.quantity_ABngtv,
+                'blood_group_bpstv' : rbc.quantity_Bpstv,
+                'blood_group_bngtv' : rbc.quantity_Bngtv,
+                'blood_group_opstv' : rbc.quantity_Opstv,
+                'blood_group_ongtv' : rbc.quantity_Ongtv,
+                'blood_group_abpstv' : rbc.quantity_ABpstv,
+                'blood_group_abngtv' : rbc.quantity_ABngtv,
+            })
+        if Plasma.objects.filter(user=t).exists():
+            plasma = Plasma.objects.get(user=t)
+            data["items"].append({
+                's_no': count,
+                'name': t.blood_bank_name,
+                'blood_component' : 'Plasma',
+                'blood_group_apstv' : plasma.quantity_ABpstv,
+                'blood_group_angtv' : plasma.quantity_ABngtv,
+                'blood_group_bpstv' : plasma.quantity_Bpstv,
+                'blood_group_bngtv' : plasma.quantity_Bngtv,
+                'blood_group_opstv' : plasma.quantity_Opstv,
+                'blood_group_ongtv' : plasma.quantity_Ongtv,
+                'blood_group_abpstv' : plasma.quantity_ABpstv,
+                'blood_group_abngtv' : plasma.quantity_ABngtv,
+            })
+        if Platelets.objects.filter(user=t).exists():
+            platelets = Platelets.objects.get(user=t)
+            data["items"].append({
+                's_no': count,
+                'name': t.blood_bank_name,
+                'blood_component' : 'Platelets',
+                'blood_group_apstv' : platelets.quantity_ABpstv,
+                'blood_group_angtv' : platelets.quantity_ABngtv,
+                'blood_group_bpstv' : platelets.quantity_Bpstv,
+                'blood_group_bngtv' : platelets.quantity_Bngtv,
+                'blood_group_opstv' : platelets.quantity_Opstv,
+                'blood_group_ongtv' : platelets.quantity_Ongtv,
+                'blood_group_abpstv' : platelets.quantity_ABpstv,
+                'blood_group_abngtv' : platelets.quantity_ABngtv,
+            })
+        if CryoAHF.objects.filter(user=t).exists():
+            cryo_ahf = CryoAHF.objects.get(user=t)
+            data["items"].append({
+                's_no': count,
+                'name': t.blood_bank_name,
+                'blood_component' : 'CryoAHF',
+                'blood_group_apstv' : cryo_ahf.quantity_ABpstv,
+                'blood_group_angtv' : cryo_ahf.quantity_ABngtv,
+                'blood_group_bpstv' : cryo_ahf.quantity_Bpstv,
+                'blood_group_bngtv' : cryo_ahf.quantity_Bngtv,
+                'blood_group_opstv' : cryo_ahf.quantity_Opstv,
+                'blood_group_ongtv' : cryo_ahf.quantity_Ongtv,
+                'blood_group_abpstv' : cryo_ahf.quantity_ABpstv,
+                'blood_group_abngtv' : cryo_ahf.quantity_ABngtv,
+            })
+        if Granulocytes.objects.filter(user=t).exists():
+            granulocytes = Granulocytes.objects.get(user=t)
+            data["items"].append({
+                's_no': count,
+                'name': t.blood_bank_name,
+                'blood_component' : 'Granulocytes',
+                'blood_group_apstv' : granulocytes.quantity_ABpstv,
+                'blood_group_angtv' : granulocytes.quantity_ABngtv,
+                'blood_group_bpstv' : granulocytes.quantity_Bpstv,
+                'blood_group_bngtv' : granulocytes.quantity_Bngtv,
+                'blood_group_opstv' : granulocytes.quantity_Opstv,
+                'blood_group_ongtv' : granulocytes.quantity_Ongtv,
+                'blood_group_abpstv' : granulocytes.quantity_ABpstv,
+                'blood_group_abngtv' : granulocytes.quantity_ABngtv,
+            })
+        count += 1
+    return render(request, "blood_bank_dashboard.html",data)

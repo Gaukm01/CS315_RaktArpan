@@ -33,7 +33,6 @@ class RBC(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     #blood_details = models.ForeignKey(Blood_details, on_delete=models.CASCADE)
     # type_name =  models.CharField(max_length=120, blank=False) #platelets, WBC, RBC, other types then each each their own class.
-    #blood_groups = models.ForeignKey(blood_groups, on_delete=models.CASCADE)
     quantity_ABpstv = models.IntegerField(default=0, blank=False)
     quantity_ABngtv = models.IntegerField(default=0, blank=False)
     quantity_Apstv = models.IntegerField(default=0, blank=False)

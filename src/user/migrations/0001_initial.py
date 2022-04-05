@@ -13,32 +13,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-<<<<<<< HEAD
             name='City',
             fields=[
                 ('city_id', models.AutoField(primary_key=True, serialize=False)),
                 ('city_name', models.CharField(max_length=30)),
-=======
-            name='Bloodtype_info',
-            fields=[
-                ('bloodtype_id', models.AutoField(primary_key=True, serialize=False)),
-                ('type_name', models.CharField(max_length=120)),
-                ('quantity_ABpstv', models.IntegerField(default=0)),
-                ('quantity_ABngtv', models.IntegerField(default=0)),
-                ('quantity_Apstv', models.IntegerField(default=0)),
-                ('quantity_Angtv', models.IntegerField(default=0)),
-                ('quantity_Bpstv', models.IntegerField(default=0)),
-                ('quantity_Bngtv', models.IntegerField(default=0)),
-                ('quantity_Opstv', models.IntegerField(default=0)),
-                ('quantity_Ongtv', models.IntegerField(default=0)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='City',
-            fields=[
-                ('city_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=30)),
->>>>>>> 7947d60ab8657268c9e62358ad4aeb0a39250ba2
                 ('district', models.CharField(max_length=30)),
                 ('state', models.CharField(max_length=30)),
                 ('country', models.CharField(max_length=30)),
@@ -59,7 +37,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-<<<<<<< HEAD
             name='RBC',
             fields=[
                 ('rbc_id', models.AutoField(primary_key=True, serialize=False)),
@@ -132,12 +109,6 @@ class Migration(migrations.Migration):
                 ('quantity_Opstv', models.IntegerField(default=0)),
                 ('quantity_Ongtv', models.IntegerField(default=0)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.user')),
-=======
-            name='Blood_details',
-            fields=[
-                ('blood_details_id', models.AutoField(primary_key=True, serialize=False)),
-                ('blood_bank_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='user.user')),
->>>>>>> 7947d60ab8657268c9e62358ad4aeb0a39250ba2
             ],
         ),
     ]

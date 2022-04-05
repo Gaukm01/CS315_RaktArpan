@@ -14,7 +14,6 @@ from user.models import (
 admin.site.register(City)
 admin.site.register(User)
 admin.site.register(RBC)
-admin.site.register(City)
 admin.site.register(Platelets)
 admin.site.register(Plasma)
 admin.site.register(CryoAHF)
