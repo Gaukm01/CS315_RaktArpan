@@ -62,15 +62,14 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
-                    </button>
-                    <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Look For Blood</a>
-                    <a class="navbar-brand" href="/user/patient_dashboard/patient_profile" style="margin-right: 25px;">Profile</a>
-                    <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">New Form</a>
+                    </button><a class="navbar-brand" href="/user/">RaktKosh</a> 
+                    <a class="navbar-brand" href="/user/loginpage" style="margin-left: 25px;">Sign In</a>
+                    <a class="navbar-brand" href="/user/signup" style="margin-left: 25px;">Register</a>
+                    
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
-                        <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
+                        <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look for Blood</a>
                     </ul> 
                 </div> 
             </div> 
@@ -79,7 +78,7 @@
        <div class="container container-fluid">
             <div class="row">
                 <!-- <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> -->
-                <form method="get" action="blood_bank_dashboard">
+                <form method="get" action="searchBlood">
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="state">State</label>
@@ -117,6 +116,7 @@
                                                 <tr>
                                                     <th scope="col">S No.</th>
                                                     <th scope="col">Blood Bank Name</th>
+                                                    <th scope="col">Address</th>
                                                     <th scope="col">Blood Component</th>
                                                     <th scope="col">Blood Group and Quantity</th>
                                                 </tr>
@@ -125,7 +125,8 @@
                                                 {% for item in items %}
                                                 <tr>
                                                     <th>{{ item.s_no }}</th>
-                                                    <td>{{ item.name }}</td>
+                                                    <td>{{ item.blood_bank.blood_bank_name }}</td>
+                                                    <td>{{ item.blood_bank.address }}</td>
                                                     <td>{{ item.blood_component }}</td>
                                                     <td>
                                                         {% if item.blood_group_apstv > 0 %}
