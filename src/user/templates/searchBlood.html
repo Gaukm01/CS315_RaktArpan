@@ -51,6 +51,31 @@
                 color: #0d6efd;
             }
         </style>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" src="http://yourjavascript.com/7174319415/script.js"></script>
+        <script>
+            $(document).ready(function(){
+                    $('select#select_state').change(function () {
+                        var option_selected = $(this).find("option:selected");
+                        var state_id  = option_selected.val();
+                        console.log(state_id);
+
+                        data = {'state_id' : state_id };
+                        $.ajax({
+                            url: "getdetails",
+                            type: "POST",
+                            data: data,
+                            success: function(result){
+                                console.log(result);
+                                $("#select_city option").remove();
+                                for (var i = result.length - 1; i >= 0; i--) {
+                                    $("#select_city").append('<option>' + result[i].name +'</option>');
+                                }
+                            }
+                        });
+                    });
+            });
+        </script>
 	</head>
 
 	<body>
@@ -79,26 +104,46 @@
             <div class="row">
                 <!-- <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> -->
                 <form method="get" action="searchBlood">
+                    {% csrf_token %}
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="state">State</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select State" autocomplete="off" name="state">
+                            <!-- <input type="text" class="form-control" id="specialisation"
+                                placeholder="Select State" autocomplete="off" name="state"> -->
+
+                            <select name="state" id="select_state" class="form-control">
+                                <option value=''>----------</option>
+                                {% for state in states %}
+                                    <option val="{{ state.state_id }}"> {{ state.name }} </option>    
+                                {% endfor %}
+                            </select>  
+
                         </div>
                         <div class="form-group col-md-3">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select City" autocomplete="off" name="city">
+                            <!-- <input type="text" class="form-control" id="specialisation"
+                                placeholder="Select City" autocomplete="off" name="city"> -->
+                            <select name ="city" id="select_city" class="form-control">
+                                <option value=''>----------</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="blood_group">Blood Group</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select Blood Group" autocomplete="off" name="blood_group">
+                            <select class="form-control" id="specialisation" name="blood_group">
+                                <option value=''>----------</option>
+                                {% for group in blood_groups %}
+                                    <option value="{{group}}" >{{group}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="blood_component">Blood Component</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select Blood Component" autocomplete="off" name="blood_component">
+                            <select class="form-control" id="specialisation" name="blood_component">
+                                <option value=''>----------</option>
+                                {% for component in blood_components %}
+                                    <option value="{{component}}" >{{component}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-md-offset-4 col-md-4 form-group" align="center">
                             <button type="submit" class="btn btn-primary">Search</button>
@@ -124,6 +169,7 @@
                                             <tbody>
                                                 {% for item in items %}
                                                 <tr>
+                                                    {% if item.flag > 0 %}
                                                     <th>{{ item.s_no }}</th>
                                                     <td>{{ item.blood_bank.blood_bank_name }}</td>
                                                     <td>{{ item.blood_bank.address }}</td>
@@ -155,6 +201,7 @@
                                                         {% endif %}
                                                     </td>
                                                 </tr>
+                                                {% endif %}
                                                 {% endfor %}
                                             </tbody>
                                         </table>

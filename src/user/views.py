@@ -4,9 +4,13 @@ from django.utils import timezone
 from django.forms import PasswordInput
 from django.shortcuts import render, redirect, HttpResponseRedirect
 import logging
+import json as simplejson
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import (
     User,
+    State,
     City,
     RBC,
     Platelets,
@@ -264,19 +268,30 @@ def blood_bank_dashboard(request):
             count += 1
     return render(request, "blood_bank_dashboard.html",data)
 
+def getdetails(request):
+    state_id = request.GET['state_id']
+    result_set = []
+    for city in City.objects.all():
+        if city.state == state_id: 
+            result_set.append({'id': city.city_id, 'name': city.name})
+    return HttpResponse(simplejson.dumps(result_set), mimetype='application/json', content_type='application/json')
+
 def searchBlood(request):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('myapp')
-    data = {"items": []}
+    data = {"items": [], 
+            "blood_groups": ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'], 
+            "blood_components": ['RBC', 'Plasma', "Platelets", "Cryo AHF", "Granulocytes"],
+            "states": State.objects.all()}
     if request.method == "GET":
         state_ = request.GET.get("state")
         city_ = request.GET.get("city")
         blood_group_ = request.GET.get("blood_group")
         blood_component_ = request.GET.get("blood_component")
-        logger.info(f"{state_}")
-        logger.info(f"{city_}")
-        logger.info(f"{blood_group_}")
-        logger.info(f"{blood_component_}")
+        # logger.info(f"{state_}")
+        # logger.info(f"{city_}")
+        # logger.info(f"{blood_group_}")
+        # logger.info(f"{blood_component_}")
         count = 1
         for t in User.objects.all():
             logger.info(f"{state_} {t.state}")
@@ -286,78 +301,123 @@ def searchBlood(request):
                 continue
             if (blood_component_ == '' or blood_component_ == "RBC") and RBC.objects.filter(user=t).exists():
                 rbc = RBC.objects.get(user=t)
+                a = rbc.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
+                b = rbc.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0
+                c = rbc.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0
+                d = rbc.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0
+                e = rbc.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0
+                f = rbc.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0
+                g = rbc.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0
+                h = rbc.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0
                 data["items"].append({
                     's_no': count,
                     'blood_bank' : t,
                     'blood_component' : 'RBC',
-                    'blood_group_apstv' : rbc.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : rbc.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : rbc.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : rbc.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : rbc.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : rbc.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : rbc.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : rbc.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
+                    'blood_group_apstv' : a,
+                    'blood_group_angtv' : b,
+                    'blood_group_bpstv' : c,
+                    'blood_group_bngtv' : d,
+                    'blood_group_opstv' : e,
+                    'blood_group_ongtv' : f,
+                    'blood_group_abpstv' : g,
+                    'blood_group_abngtv' : h,
+                    'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
             if (blood_component_ == '' or blood_component_ == "Plasma") and Plasma.objects.filter(user=t).exists():
                 plasma = Plasma.objects.get(user=t)
+                a = plasma.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
+                b = plasma.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0
+                c = plasma.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0
+                d = plasma.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0
+                e = plasma.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0
+                f = plasma.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0
+                g = plasma.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0
+                h = plasma.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0
                 data["items"].append({
                     's_no': count,
                     'blood_bank' : t,
                     'blood_component' : 'Plasma',
-                    'blood_group_apstv' : plasma.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : plasma.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : plasma.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : plasma.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : plasma.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : plasma.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : plasma.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : plasma.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
+                    'blood_group_apstv' : a,
+                    'blood_group_angtv' : b,
+                    'blood_group_bpstv' : c,
+                    'blood_group_bngtv' : d,
+                    'blood_group_opstv' : e,
+                    'blood_group_ongtv' : f,
+                    'blood_group_abpstv' : g,
+                    'blood_group_abngtv' : h,
+                    'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
             if (blood_component_ == '' or blood_component_ == "Platelets") and Platelets.objects.filter(user=t).exists():
                 platelets = Platelets.objects.get(user=t)
+                a = platelets.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
+                b = platelets.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0
+                c = platelets.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0
+                d = platelets.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0
+                e = platelets.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0
+                f = platelets.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0
+                g = platelets.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0
+                h = platelets.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0
                 data["items"].append({
                     's_no': count,
                     'blood_bank' : t,
                     'blood_component' : 'Platelets',
-                    'blood_group_apstv' : platelets.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : platelets.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : platelets.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : platelets.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : platelets.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : platelets.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : platelets.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : platelets.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
+                    'blood_group_apstv' : a,
+                    'blood_group_angtv' : b,
+                    'blood_group_bpstv' : c,
+                    'blood_group_bngtv' : d,
+                    'blood_group_opstv' : e,
+                    'blood_group_ongtv' : f,
+                    'blood_group_abpstv' : g,
+                    'blood_group_abngtv' : h,
+                    'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
             if (blood_component_ == '' or blood_component_ == "Cryo AHF") and CryoAHF.objects.filter(user=t).exists():
                 cryo_ahf = CryoAHF.objects.get(user=t)
+                a = cryo_ahf.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
+                b = cryo_ahf.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0
+                c = cryo_ahf.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0
+                d = cryo_ahf.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0
+                e = cryo_ahf.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0
+                f = cryo_ahf.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0
+                g = cryo_ahf.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0
+                h = cryo_ahf.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0
                 data["items"].append({
                     's_no': count,
                     'blood_bank' : t,
                     'blood_component' : 'CryoAHF',
-                    'blood_group_apstv' : cryo_ahf.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : cryo_ahf.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : cryo_ahf.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : cryo_ahf.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : cryo_ahf.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : cryo_ahf.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : cryo_ahf.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : cryo_ahf.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
+                    'blood_group_apstv' : a,
+                    'blood_group_angtv' : b,
+                    'blood_group_bpstv' : c,
+                    'blood_group_bngtv' : d,
+                    'blood_group_opstv' : e,
+                    'blood_group_ongtv' : f,
+                    'blood_group_abpstv' : g,
+                    'blood_group_abngtv' : h,
+                    'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
             if (blood_component_ == '' or blood_component_ == "Granulocytes") and Granulocytes.objects.filter(user=t).exists():
                 granulocytes = Granulocytes.objects.get(user=t)
+                a = granulocytes.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
+                b = granulocytes.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0
+                c = granulocytes.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0
+                d = granulocytes.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0
+                e = granulocytes.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0
+                f = granulocytes.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0
+                g = granulocytes.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0
+                h = granulocytes.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0
                 data["items"].append({
                     's_no': count,
                     'blood_bank' : t,
                     'blood_component' : 'Granulocytes',
-                    'blood_group_apstv' : granulocytes.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : granulocytes.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : granulocytes.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : granulocytes.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : granulocytes.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : granulocytes.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : granulocytes.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : granulocytes.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
+                    'blood_group_apstv' : a,
+                    'blood_group_angtv' : b,
+                    'blood_group_bpstv' : c,
+                    'blood_group_bngtv' : d,
+                    'blood_group_opstv' : e,
+                    'blood_group_ongtv' : f,
+                    'blood_group_abpstv' : g,
+                    'blood_group_abngtv' : h,
+                    'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
             count += 1
     return render(request, "searchBlood.html",data)

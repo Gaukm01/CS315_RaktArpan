@@ -10,4 +10,5 @@ urlpatterns = [
     path("loginUser", views.loginUser, name="loginUser"),
     path("logout", views.logout, name="logout"),
     path("blood_bank_dashboard",views.blood_bank_dashboard, name="blood_bank_dashboard"),
+    path("/getdetails", views.getdetails, name="getdetails")
 ]
