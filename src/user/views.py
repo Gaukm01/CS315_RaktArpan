@@ -76,6 +76,7 @@ def blood_bank_signup(request):
             request, "signup.html", 
             {
                 "cities" : City.objects.all(),
+                "states" : State.objects.all(),
             }
             )
 
@@ -95,6 +96,10 @@ def register_blood_bank(request):
             address = request.POST.get("address")
             contact = request.POST.get("contact")
             city = City.objects.get(city_id=request.POST.get("city"))
+            state = State.objects.get(state_id=request.POST.get("state"))
+            if(city.state != state) :
+                messages.error(request, "City is not present in given state!")
+                return HttpResponseRedirect("/user/signup")
             if(password1 != password2):
                 messages.error(request, "Password does not match!")
                 return HttpResponseRedirect("/user/signup")   
@@ -115,6 +120,7 @@ def register_blood_bank(request):
                     user.address = address
                     user.contact= contact
                     user.city = city
+                    user.state = state
                     user.save()
 
                     messages.success(request, "User account created successfully!")

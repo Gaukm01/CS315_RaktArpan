@@ -14,7 +14,7 @@ class State(models.Model):
 class City(models.Model):
     city_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30, blank=False)
-    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    state = models.ForeignKey(State, null=True,on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.city_id)
@@ -28,8 +28,8 @@ class User(models.Model):
     contact = models.CharField(max_length=10, default="N/A", blank=False)
     address = models.CharField(max_length=400, default="N/A", blank=False)
     roles = models.CharField(max_length=20, default="N/A", blank=False) #blood_bank : for role based restriction
-    state = models.ForeignKey(State, on_delete=models.CASCADE)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    state = models.ForeignKey(State, on_delete=models.CASCADE,null=True,  default = None)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, default = None)
     
     def __str__(self):
         return str(self.user_id)
