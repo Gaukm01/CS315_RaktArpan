@@ -112,6 +112,7 @@ def register_blood_bank(request):
                     messages.error(request, "User with this email already exits!")
                     return HttpResponseRedirect("/user/signup")
                 else:
+                    #create a user obj and save
                     user = User(roles="blood_bank")
                     user.blood_bank_name = name
                     user.username = username
@@ -122,6 +123,66 @@ def register_blood_bank(request):
                     user.city = city
                     user.state = state
                     user.save()
+                    
+                    #create a corresponding RBC object for given user while registering
+                    rbc = RBC(user=user)
+                    rbc.quantity_Apstv = 0 
+                    rbc.quantity_Angtv = 0 
+                    rbc.quantity_Bpstv  =0 
+                    rbc.quantity_Bngtv = 0 
+                    rbc.quantity_Opstv = 0
+                    rbc.quantity_Ongtv = 0
+                    rbc.quantity_ABpstv =0 
+                    rbc.quantity_ABngtv =0 
+                    rbc.save()
+
+                    #create a corresponding Platelets object for given user while registering
+                    platelets = Platelets(user=user)
+                    platelets.quantity_Apstv = 0 
+                    platelets.quantity_Angtv = 0 
+                    platelets.quantity_Bpstv  =0 
+                    platelets.quantity_Bngtv = 0 
+                    platelets.quantity_Opstv = 0
+                    platelets.quantity_Ongtv = 0
+                    platelets.quantity_ABpstv =0 
+                    platelets.quantity_ABngtv =0 
+                    platelets.save()
+
+                    #create a corresponding Plasma object for given user while registering
+                    plasma = Plasma(user=user)
+                    plasma.quantity_Apstv = 0 
+                    plasma.quantity_Angtv = 0 
+                    plasma.quantity_Bpstv  =0 
+                    plasma.quantity_Bngtv = 0 
+                    plasma.quantity_Opstv = 0
+                    plasma.quantity_Ongtv = 0
+                    plasma.quantity_ABpstv =0 
+                    plasma.quantity_ABngtv =0 
+                    plasma.save()
+
+                    #create a corresponding CryoAHF object for given user while registering
+                    cryo_ahf = CryoAHF(user=user)
+                    cryo_ahf.quantity_Apstv = 0 
+                    cryo_ahf.quantity_Angtv = 0 
+                    cryo_ahf.quantity_Bpstv  =0 
+                    cryo_ahf.quantity_Bngtv = 0 
+                    cryo_ahf.quantity_Opstv = 0
+                    cryo_ahf.quantity_Ongtv = 0
+                    cryo_ahf.quantity_ABpstv =0 
+                    cryo_ahf.quantity_ABngtv =0 
+                    cryo_ahf.save()
+
+                    #create a corresponding Granulocytes object for given user while registering
+                    granulocytes = Granulocytes(user=user)
+                    granulocytes.quantity_Apstv = 0 
+                    granulocytes.quantity_Angtv = 0 
+                    granulocytes.quantity_Bpstv  =0 
+                    granulocytes.quantity_Bngtv = 0 
+                    granulocytes.quantity_Opstv = 0
+                    granulocytes.quantity_Ongtv = 0
+                    granulocytes.quantity_ABpstv =0 
+                    granulocytes.quantity_ABngtv =0 
+                    granulocytes.save()
 
                     messages.success(request, "User account created successfully!")
                     return HttpResponseRedirect("/user/loginpage")
