@@ -173,103 +173,61 @@ def blood_bank(request):
         "blood_bank_dashboard.html",
         {
             "user": IsLoggedIn(request),
-            #"patient": user.objects.get(user=IsLoggedIn(request)),
+            #"blood_bank": user.objects.get(user=IsLoggedIn(request)),
         },
     )
 
 def blood_bank_dashboard(request):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger('myapp')
-    data = {"items": []}
-    if request.method == "GET":
-        state_ = request.GET.get("state")
-        city_ = request.GET.get("city")
-        blood_group_ = request.GET.get("blood_group")
-        blood_component_ = request.GET.get("blood_component")
-        count = 1
-        for t in User.objects.all():
-            logger.info(f"{state_} {t.state}")
-            if state_ != '' and t.state != state_:
-                continue
-            if city_ != '' and t.city != city_:
-                continue
-            if (blood_component_ == '' or blood_component_ == "RBC") and RBC.objects.filter(user=t).exists():
-                rbc = RBC.objects.get(user=t)
-                data["items"].append({
-                    's_no': count,
-                    'blood_bank' : t,
-                    'blood_component' : 'RBC',
-                    'blood_group_apstv' : rbc.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : rbc.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : rbc.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : rbc.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : rbc.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : rbc.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : rbc.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : rbc.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
-                })
-            if (blood_component_ == '' or blood_component_ == "Plasma") and Plasma.objects.filter(user=t).exists():
-                plasma = Plasma.objects.get(user=t)
-                data["items"].append({
-                    's_no': count,
-                    'blood_bank' : t,
-                    'blood_component' : 'Plasma',
-                    'blood_group_apstv' : plasma.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : plasma.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : plasma.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : plasma.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : plasma.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : plasma.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : plasma.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : plasma.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
-                })
-            if (blood_component_ == '' or blood_component_ == "Platelets") and Platelets.objects.filter(user=t).exists():
-                platelets = Platelets.objects.get(user=t)
-                data["items"].append({
-                    's_no': count,
-                    'blood_bank' : t,
-                    'blood_component' : 'Platelets',
-                    'blood_group_apstv' : platelets.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : platelets.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : platelets.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : platelets.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : platelets.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : platelets.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : platelets.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : platelets.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
-                })
-            if (blood_component_ == '' or blood_component_ == "Cryo AHF") and CryoAHF.objects.filter(user=t).exists():
-                cryo_ahf = CryoAHF.objects.get(user=t)
-                data["items"].append({
-                    's_no': count,
-                    'blood_bank' : t,
-                    'blood_component' : 'CryoAHF',
-                    'blood_group_apstv' : cryo_ahf.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : cryo_ahf.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : cryo_ahf.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : cryo_ahf.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : cryo_ahf.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : cryo_ahf.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : cryo_ahf.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : cryo_ahf.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
-                })
-            if (blood_component_ == '' or blood_component_ == "Granulocytes") and Granulocytes.objects.filter(user=t).exists():
-                granulocytes = Granulocytes.objects.get(user=t)
-                data["items"].append({
-                    's_no': count,
-                    'blood_bank' : t,
-                    'blood_component' : 'Granulocytes',
-                    'blood_group_apstv' : granulocytes.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0,
-                    'blood_group_angtv' : granulocytes.quantity_Angtv if (blood_group_ == '' or blood_group_ == 'A-') else 0,
-                    'blood_group_bpstv' : granulocytes.quantity_Bpstv if (blood_group_ == '' or blood_group_ == 'B+') else 0,
-                    'blood_group_bngtv' : granulocytes.quantity_Bngtv if (blood_group_ == '' or blood_group_ == 'B-') else 0,
-                    'blood_group_opstv' : granulocytes.quantity_Opstv if (blood_group_ == '' or blood_group_ == 'O+') else 0,
-                    'blood_group_ongtv' : granulocytes.quantity_Ongtv if (blood_group_ == '' or blood_group_ == 'O-') else 0,
-                    'blood_group_abpstv' : granulocytes.quantity_ABpstv if (blood_group_ == '' or blood_group_ == 'AB+') else 0,
-                    'blood_group_abngtv' : granulocytes.quantity_ABngtv if (blood_group_ == '' or blood_group_ == 'AB-') else 0,
-                })
-            count += 1
-    return render(request, "blood_bank_dashboard.html",data)
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "blood_bank": # already logged in but not as blood_bank
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+    #logging.basicConfig(level=logging.INFO)
+    #logger = logging.getLogger('myapp')
+        data = {"blood_bank": None, "Blood_details": []}#,"items": []}
+
+        for b in User.objects.all():
+            if b == user:
+                data["blood_bank"] = b
+                for r in RBC.objects.all():
+                    if r.user == b:
+                        data["Blood_details"].append(
+                            {"rbc": r,}
+                        )
+                        break
+                for pt in Platelets.objects.all():
+                    if pt.user == b:
+                        data["Blood_details"].append(
+                            {"platelets": pt,}
+                        )
+                        break
+                for pl in Plasma.objects.all():
+                    if pl.user == b:
+                        data["Blood_details"].append(
+                            {"plasma": pl,}
+                        )
+                        break
+                for c in CryoAHF.objects.all():
+                    if c.user == b:
+                        data["Blood_details"].append(
+                            {"cryo_ahf": c,}
+                        )
+                        break
+                for g in Granulocytes.objects.all():
+                    if g.user == b:
+                        data["Blood_details"].append(
+                            {"granulocytes": g,}
+                        )
+                        break
+                break
+        logger.info(f" {data['Blood_details'][0]['rbc'].quantity_Apstv}")
+        return render(request, "blood_bank_dashboard.html",data)
 
 def getdetails(request):
     state = request.GET.get('state')
@@ -429,3 +387,175 @@ def searchBlood(request):
                 })
             count += 1
     return render(request, "searchBlood.html",data)
+
+def blood_bank_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        if user.roles == "blood_bank":
+            data = {"blood_bank": None}
+            for b in User.objects.all():
+                if b == user:
+                    data["blood_bank"] = b
+                    break
+            return render(request, "blood_bank_profile.html", data)
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+
+
+def update_blood_bank_profile(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "blood_bank": # already logged in but not as blood_bank 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        if request.method == "POST":
+            username = user.username
+            contact = request.POST.get("contact")
+            #address = request.POST.get("address")
+            
+
+            # return HttpResponse(str(username) + " " + str(contact))
+            userp = User.objects.get(username=username)
+            userp.contact = contact
+            # userp.address = address
+            userp.save()
+
+            messages.success(request, "Profile Succesfully Updated!")
+            return HttpResponseRedirect("/user/blood_bank_dashboard/blood_bank_profile")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+
+def update_blood_details(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "blood_bank": # already logged in but not as blood_bank 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        if request.method == "POST":
+            username = user.username
+
+            #new rbc details updated
+            rbc_quantity_Apstv =  request.POST.get("rbc_quantity_Apstv")
+            rbc_quantity_Angtv = request.POST.get("rbc_quantity_Angtv") 
+            rbc_quantity_Bpstv  = request.POST.get("rbc_quantity_Bpstv")
+            rbc_quantity_Bngtv = request.POST.get("rbc_quantity_Bngtv") 
+            rbc_quantity_Opstv = request.POST.get("rbc_quantity_Opstv")
+            rbc_quantity_Ongtv = request.POST.get("rbc_quantity_Ongtv")
+            rbc_quantity_ABpstv = request.POST.get("rbc_quantity_ABpstv")
+            rbc_quantity_ABngtv = request.POST.get("rbc_quantity_ABngtv")
+
+            rbc = RBC.objects.get(username=username)
+            rbc.quantity_Apstv =  rbc_quantity_Apstv
+            rbc.quantity_Angtv = rbc_quantity_Angtv 
+            rbc.quantity_Bpstv  = rbc_quantity_Bpstv
+            rbc.quantity_Bngtv = rbc_quantity_Bngtv 
+            rbc.quantity_Opstv = rbc_quantity_Opstv
+            rbc.quantity_Ongtv = rbc_quantity_Ongtv
+            rbc.quantity_ABpstv = rbc_quantity_ABpstv
+            rbc.quantity_ABngtv = rbc_quantity_ABngtv
+            rbc.save()
+            
+
+            #new platelets details updated
+            platelets_quantity_Apstv =  request.POST.get("platelets_quantity_Apstv")
+            platelets_quantity_Angtv = request.POST.get("platelets_quantity_Angtv") 
+            platelets_quantity_Bpstv  = request.POST.get("platelets_quantity_Bpstv")
+            platelets_quantity_Bngtv = request.POST.get("platelets_quantity_Bngtv") 
+            platelets_quantity_Opstv = request.POST.get("platelets_quantity_Opstv")
+            platelets_quantity_Ongtv = request.POST.get("platelets_quantity_Ongtv")
+            platelets_quantity_ABpstv = request.POST.get("platelets_quantity_ABpstv")
+            platelets_quantity_ABngtv = request.POST.get("platelets_quantity_ABngtv")
+
+            platelets = Platelets.objects.get(username=username)
+            platelets.quantity_Apstv =  platelets_quantity_Apstv
+            platelets.quantity_Angtv = platelets_quantity_Angtv 
+            platelets.quantity_Bpstv  = platelets_quantity_Bpstv
+            platelets.quantity_Bngtv = platelets_quantity_Bngtv 
+            platelets.quantity_Opstv = platelets_quantity_Opstv
+            platelets.quantity_Ongtv = platelets_quantity_Ongtv
+            platelets.quantity_ABpstv = platelets_quantity_ABpstv
+            platelets.quantity_ABngtv = platelets_quantity_ABngtv
+            platelets.save()
+
+
+            #new plasma details updated
+            plasma_quantity_Apstv =  request.POST.get("plasma_quantity_Apstv")
+            plasma_quantity_Angtv = request.POST.get("plasma_quantity_Angtv") 
+            plasma_quantity_Bpstv  = request.POST.get("plasma_quantity_Bpstv")
+            plasma_quantity_Bngtv = request.POST.get("plasma_quantity_Bngtv") 
+            plasma_quantity_Opstv = request.POST.get("plasma_quantity_Opstv")
+            plasma_quantity_Ongtv = request.POST.get("plasma_quantity_Ongtv")
+            plasma_quantity_ABpstv = request.POST.get("plasma_quantity_ABpstv")
+            plasma_quantity_ABngtv = request.POST.get("plasma_quantity_ABngtv")
+
+            plasma = Plasma.objects.get(username=username)
+            plasma.quantity_Apstv =  plasma_quantity_Apstv
+            plasma.quantity_Angtv = plasma_quantity_Angtv 
+            plasma.quantity_Bpstv  = plasma_quantity_Bpstv
+            plasma.quantity_Bngtv = plasma_quantity_Bngtv 
+            plasma.quantity_Opstv = plasma_quantity_Opstv
+            plasma.quantity_Ongtv = plasma_quantity_Ongtv
+            plasma.quantity_ABpstv = plasma_quantity_ABpstv
+            plasma.quantity_ABngtv = plasma_quantity_ABngtv
+            plasma.save()
+
+
+            #new cryo_ahf details updated
+            cryo_ahf_quantity_Apstv =  request.POST.get("cryo_ahf_quantity_Apstv")
+            cryo_ahf_quantity_Angtv = request.POST.get("cryo_ahf_quantity_Angtv") 
+            cryo_ahf_quantity_Bpstv  = request.POST.get("cryo_ahf_quantity_Bpstv")
+            cryo_ahf_quantity_Bngtv = request.POST.get("cryo_ahf_quantity_Bngtv") 
+            cryo_ahf_quantity_Opstv = request.POST.get("cryo_ahf_quantity_Opstv")
+            cryo_ahf_quantity_Ongtv = request.POST.get("cryo_ahf_quantity_Ongtv")
+            cryo_ahf_quantity_ABpstv = request.POST.get("cryo_ahf_quantity_ABpstv")
+            cryo_ahf_quantity_ABngtv = request.POST.get("cryo_ahf_quantity_ABngtv")
+
+            cryo_ahf = CryoAHF.objects.get(username=username)
+            cryo_ahf.quantity_Apstv =  cryo_ahf_quantity_Apstv
+            cryo_ahf.quantity_Angtv = cryo_ahf_quantity_Angtv 
+            cryo_ahf.quantity_Bpstv  = cryo_ahf_quantity_Bpstv
+            cryo_ahf.quantity_Bngtv = cryo_ahf_quantity_Bngtv 
+            cryo_ahf.quantity_Opstv = cryo_ahf_quantity_Opstv
+            cryo_ahf.quantity_Ongtv = cryo_ahf_quantity_Ongtv
+            cryo_ahf.quantity_ABpstv = cryo_ahf_quantity_ABpstv
+            cryo_ahf.quantity_ABngtv = cryo_ahf_quantity_ABngtv
+            cryo_ahf.save()
+
+
+            #new granulocytes details updated
+            granulocytes_quantity_Apstv =  request.POST.get("granulocytes_quantity_Apstv")
+            granulocytes_quantity_Angtv = request.POST.get("granulocytes_quantity_Angtv") 
+            granulocytes_quantity_Bpstv  = request.POST.get("granulocytes_quantity_Bpstv")
+            granulocytes_quantity_Bngtv = request.POST.get("granulocytes_quantity_Bngtv") 
+            granulocytes_quantity_Opstv = request.POST.get("granulocytes_quantity_Opstv")
+            granulocytes_quantity_Ongtv = request.POST.get("granulocytes_quantity_Ongtv")
+            granulocytes_quantity_ABpstv = request.POST.get("granulocytes_quantity_ABpstv")
+            granulocytes_quantity_ABngtv = request.POST.get("granulocytes_quantity_ABngtv")
+
+            granulocytes = Granulocytes.objects.get(username=username)
+            granulocytes.quantity_Apstv =  granulocytes_quantity_Apstv
+            granulocytes.quantity_Angtv = granulocytes_quantity_Angtv 
+            granulocytes.quantity_Bpstv  = granulocytes_quantity_Bpstv
+            granulocytes.quantity_Bngtv = granulocytes_quantity_Bngtv 
+            granulocytes.quantity_Opstv = granulocytes_quantity_Opstv
+            granulocytes.quantity_Ongtv = granulocytes_quantity_Ongtv
+            granulocytes.quantity_ABpstv = granulocytes_quantity_ABpstv
+            granulocytes.quantity_ABngtv = granulocytes_quantity_ABngtv
+            granulocytes.save()
+
+            messages.success(request, "Blood Details Succesfully Updated!")
+            return HttpResponseRedirect("/user/blood_bank_dashboard")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+

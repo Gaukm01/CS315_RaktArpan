@@ -63,22 +63,73 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                     </button>
-                    <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Look For Blood</a>
-                    <a class="navbar-brand" href="/user/patient_dashboard/patient_profile" style="margin-right: 25px;">Profile</a>
-                    <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">New Form</a>
+                    <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
+                    <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
+                    <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
+                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ blood_bank.username }}</a></li> 
                         <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                     </ul> 
                 </div> 
             </div> 
         </div>
-
-       <div class="container container-fluid">
+        <h5 class="card-header">View and Update Blood Details</h5>
+        <div class="container container-fluid">
+            <form action = "blood_bank_dashboard/update_blood_details" method = "POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">RBC Details</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SNo.</th>
+                                                <th scope="col">Blood Type</th>
+                                                <th scope="col">Current Stock</th>
+                                                <th scope="col">Update Stock</th>
+                                                <!-- <th scope="col"></th>
+                                                <th scope="col"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1.</td>
+                                                <th scope="row"> A+ </th>
+                                                <!-- <td></td> -->
+                                                <td>
+                                                {% for detail in Blood_details %}
+                                                {{ detail.rbc.quantity_Apstv }}
+                                                {% endfor %}</td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' step='1' value="{{ Blood_details.rbc.quantity_Apstv }}" class="form-control" id="rbc_quantity_Apstv"
+                                                            name="rbc_quantity_Apstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                                
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                </div>
+            </form>
+        </div>
+        
+       <!-- <div class="container container-fluid">
             <div class="row">
-                <!-- <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> -->
+                < <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> >
                 <form method="get" action="blood_bank_dashboard">
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -163,7 +214,7 @@
                         </div>
                     </div>
             <div class="push"></div>
-        </div>
+        </div> -->
 		<footer class = "navbar-fixed-bottom">
             <div class="container"> 
                 <center> 
