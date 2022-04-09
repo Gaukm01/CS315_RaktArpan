@@ -190,43 +190,34 @@ def blood_bank_dashboard(request):
     else:
     #logging.basicConfig(level=logging.INFO)
     #logger = logging.getLogger('myapp')
-        data = {"blood_bank": None, "Blood_details": []}#,"items": []}
+        data = {"blood_bank": None, "rbc": None, "platelets": None, "platelets":None, "cryo_ahf":None, "granulocytes":None}#,"items": []}
 
         for b in User.objects.all():
             if b == user:
                 data["blood_bank"] = b
                 for r in RBC.objects.all():
                     if r.user == b:
-                        data["Blood_details"].append(
-                            {"rbc": r,}
-                        )
+                        data["rbc"]= r
+                        
                         break
                 for pt in Platelets.objects.all():
                     if pt.user == b:
-                        data["Blood_details"].append(
-                            {"platelets": pt,}
-                        )
+                        data["platelets"] = pt
                         break
                 for pl in Plasma.objects.all():
                     if pl.user == b:
-                        data["Blood_details"].append(
-                            {"plasma": pl,}
-                        )
+                        data["plasma"]= pl
                         break
                 for c in CryoAHF.objects.all():
                     if c.user == b:
-                        data["Blood_details"].append(
-                            {"cryo_ahf": c,}
-                        )
+                        data["cryo_ahf"] = c
                         break
                 for g in Granulocytes.objects.all():
                     if g.user == b:
-                        data["Blood_details"].append(
-                            {"granulocytes": g,}
-                        )
+                        data["granulocytes"]= g
                         break
                 break
-        logger.info(f" {data['Blood_details'][0]['rbc'].quantity_Apstv}")
+        logger.info(f" {data['rbc'].quantity_Apstv}")
         return render(request, "blood_bank_dashboard.html",data)
 
 def getdetails(request):
@@ -442,7 +433,7 @@ def update_blood_details(request):
         return HttpResponseRedirect(url)
     else:
         if request.method == "POST":
-            username = user.username
+            #usern = user.username
 
             #new rbc details updated
             rbc_quantity_Apstv =  request.POST.get("rbc_quantity_Apstv")
@@ -454,7 +445,7 @@ def update_blood_details(request):
             rbc_quantity_ABpstv = request.POST.get("rbc_quantity_ABpstv")
             rbc_quantity_ABngtv = request.POST.get("rbc_quantity_ABngtv")
 
-            rbc = RBC.objects.get(username=username)
+            rbc = RBC.objects.get(user=user)
             rbc.quantity_Apstv =  rbc_quantity_Apstv
             rbc.quantity_Angtv = rbc_quantity_Angtv 
             rbc.quantity_Bpstv  = rbc_quantity_Bpstv
@@ -476,7 +467,7 @@ def update_blood_details(request):
             platelets_quantity_ABpstv = request.POST.get("platelets_quantity_ABpstv")
             platelets_quantity_ABngtv = request.POST.get("platelets_quantity_ABngtv")
 
-            platelets = Platelets.objects.get(username=username)
+            platelets = Platelets.objects.get(user=user)
             platelets.quantity_Apstv =  platelets_quantity_Apstv
             platelets.quantity_Angtv = platelets_quantity_Angtv 
             platelets.quantity_Bpstv  = platelets_quantity_Bpstv
@@ -498,7 +489,7 @@ def update_blood_details(request):
             plasma_quantity_ABpstv = request.POST.get("plasma_quantity_ABpstv")
             plasma_quantity_ABngtv = request.POST.get("plasma_quantity_ABngtv")
 
-            plasma = Plasma.objects.get(username=username)
+            plasma = Plasma.objects.get(user=user)
             plasma.quantity_Apstv =  plasma_quantity_Apstv
             plasma.quantity_Angtv = plasma_quantity_Angtv 
             plasma.quantity_Bpstv  = plasma_quantity_Bpstv
@@ -510,7 +501,7 @@ def update_blood_details(request):
             plasma.save()
 
 
-            #new cryo_ahf details updated
+            # #new cryo_ahf details updated
             cryo_ahf_quantity_Apstv =  request.POST.get("cryo_ahf_quantity_Apstv")
             cryo_ahf_quantity_Angtv = request.POST.get("cryo_ahf_quantity_Angtv") 
             cryo_ahf_quantity_Bpstv  = request.POST.get("cryo_ahf_quantity_Bpstv")
@@ -520,7 +511,7 @@ def update_blood_details(request):
             cryo_ahf_quantity_ABpstv = request.POST.get("cryo_ahf_quantity_ABpstv")
             cryo_ahf_quantity_ABngtv = request.POST.get("cryo_ahf_quantity_ABngtv")
 
-            cryo_ahf = CryoAHF.objects.get(username=username)
+            cryo_ahf = CryoAHF.objects.get(user=user)
             cryo_ahf.quantity_Apstv =  cryo_ahf_quantity_Apstv
             cryo_ahf.quantity_Angtv = cryo_ahf_quantity_Angtv 
             cryo_ahf.quantity_Bpstv  = cryo_ahf_quantity_Bpstv
@@ -532,7 +523,7 @@ def update_blood_details(request):
             cryo_ahf.save()
 
 
-            #new granulocytes details updated
+            # # #new granulocytes details updated
             granulocytes_quantity_Apstv =  request.POST.get("granulocytes_quantity_Apstv")
             granulocytes_quantity_Angtv = request.POST.get("granulocytes_quantity_Angtv") 
             granulocytes_quantity_Bpstv  = request.POST.get("granulocytes_quantity_Bpstv")
@@ -542,7 +533,7 @@ def update_blood_details(request):
             granulocytes_quantity_ABpstv = request.POST.get("granulocytes_quantity_ABpstv")
             granulocytes_quantity_ABngtv = request.POST.get("granulocytes_quantity_ABngtv")
 
-            granulocytes = Granulocytes.objects.get(username=username)
+            granulocytes = Granulocytes.objects.get(user=user)
             granulocytes.quantity_Apstv =  granulocytes_quantity_Apstv
             granulocytes.quantity_Angtv = granulocytes_quantity_Angtv 
             granulocytes.quantity_Bpstv  = granulocytes_quantity_Bpstv
