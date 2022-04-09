@@ -57,14 +57,13 @@
             $(document).ready(function(){
                     $('select#select_state').change(function () {
                         var option_selected = $(this).find("option:selected");
-                        var state_id  = option_selected.val();
-                        console.log(state_id);
+                        var state = option_selected.val();
+                        // console.log(state);
 
-                        data = {'state_id' : state_id };
                         $.ajax({
                             url: "getdetails",
-                            type: "POST",
-                            data: data,
+                            type: "GET",
+                            data: {'state' : state},
                             success: function(result){
                                 console.log(result);
                                 $("#select_city option").remove();
@@ -111,10 +110,10 @@
                             <!-- <input type="text" class="form-control" id="specialisation"
                                 placeholder="Select State" autocomplete="off" name="state"> -->
 
-                            <select name="state" id="select_state" class="form-control">
+                            <select id="select_state" class="form-control" name="state">
                                 <option value=''>----------</option>
                                 {% for state in states %}
-                                    <option val="{{ state.state_id }}"> {{ state.name }} </option>    
+                                    <option val="{{ state.state }}"> {{ state.name }} </option>    
                                 {% endfor %}
                             </select>  
 

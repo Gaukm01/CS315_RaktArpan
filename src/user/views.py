@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from audioop import add
 from re import M
 from django.utils import timezone
@@ -179,10 +180,6 @@ def blood_bank_dashboard(request):
         city_ = request.GET.get("city")
         blood_group_ = request.GET.get("blood_group")
         blood_component_ = request.GET.get("blood_component")
-        logger.info(f"{state_}")
-        logger.info(f"{city_}")
-        logger.info(f"{blood_group_}")
-        logger.info(f"{blood_component_}")
         count = 1
         for t in User.objects.all():
             logger.info(f"{state_} {t.state}")
@@ -269,12 +266,17 @@ def blood_bank_dashboard(request):
     return render(request, "blood_bank_dashboard.html",data)
 
 def getdetails(request):
-    state_id = request.GET['state_id']
+    state = request.GET.get('state')
+    state_object = -1
+    for t in State.objects.all():
+        if t.name == state:
+            state_object = t
     result_set = []
     for city in City.objects.all():
-        if city.state == state_id: 
+        if city.state == state_object: 
             result_set.append({'id': city.city_id, 'name': city.name})
-    return HttpResponse(simplejson.dumps(result_set), mimetype='application/json', content_type='application/json')
+    logger.info(f"{result_set[0]['name']}")
+    return HttpResponse(simplejson.dumps(result_set), content_type="application/json")
 
 def searchBlood(request):
     logging.basicConfig(level=logging.INFO)
