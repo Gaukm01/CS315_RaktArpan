@@ -51,6 +51,30 @@
                 color: #0d6efd;
             }
         </style>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" src="http://yourjavascript.com/7174319415/script.js"></script>
+        <script>
+            $(document).ready(function(){
+                    $('select#select_state').change(function () {
+                        var option_selected = $(this).find("option:selected");
+                        var state = option_selected.val();
+                        // console.log(state);
+
+                        $.ajax({
+                            url: "getdetails",
+                            type: "GET",
+                            data: {'state' : state},
+                            success: function(result){
+                                console.log(result);
+                                $("#select_city option").remove();
+                                for (var i = result.length - 1; i >= 0; i--) {
+                                    $("#select_city").append('<option>' + result[i].name +'</option>');
+                                }
+                            }
+                        });
+                    });
+            });
+        </script>
 	</head>
 
 	<body>
@@ -62,16 +86,14 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
-                    </button>
-                    <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Look For Blood</a>
-                    <a class="navbar-brand" href="/user/patient_dashboard/patient_profile" style="margin-right: 25px;">Profile</a>
-                    <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">New Form</a>
-                    <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Camp</a>
+                    </button><a class="navbar-brand" href="/user/">RaktKosh</a> 
+                    <a class="navbar-brand" href="/user/loginpage" style="margin-left: 25px;">Sign In</a>
+                    <a class="navbar-brand" href="/user/signup" style="margin-left: 25px;">Register</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
-                        <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
+                        <a class="navbar-brand" href="/user/donateBlood" style="margin-right: 25px;">Donate Blood</a>
+                        <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look for Blood</a>
                     </ul> 
                 </div> 
             </div> 
@@ -80,27 +102,29 @@
        <div class="container container-fluid">
             <div class="row">
                 <!-- <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> -->
-                <form method="get" action="blood_bank_dashboard">
+                <form method="get" action="searchBlood">
+                    {% csrf_token %}
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-offset-2 col-md-4">
                             <label for="state">State</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select State" autocomplete="off" name="state">
+                            <!-- <input type="text" class="form-control" id="specialisation"
+                                placeholder="Select State" autocomplete="off" name="state"> -->
+
+                            <select id="select_state" class="form-control" name="state">
+                                <option value=''>----------</option>
+                                {% for state in states %}
+                                    <option val="{{ state.state }}"> {{ state.name }} </option>    
+                                {% endfor %}
+                            </select>  
+
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select City" autocomplete="off" name="city">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="blood_group">Blood Group</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select Blood Group" autocomplete="off" name="blood_group">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="blood_component">Blood Component</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select Blood Component" autocomplete="off" name="blood_component">
+                            <!-- <input type="text" class="form-control" id="specialisation"
+                                placeholder="Select City" autocomplete="off" name="city"> -->
+                            <select name ="city" id="select_city" class="form-control">
+                                <option value=''>----------</option>
+                            </select>
                         </div>
                         <div class="col-md-offset-4 col-md-4 form-group" align="center">
                             <button type="submit" class="btn btn-primary">Search</button>
@@ -117,43 +141,28 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">S No.</th>
-                                                    <th scope="col">Blood Bank Name</th>
-                                                    <th scope="col">Blood Component</th>
-                                                    <th scope="col">Blood Group and Quantity</th>
+                                                    <th scope="col">Camp Name</th>
+                                                    <th scope="col">State</th>
+                                                    <th scope="col">City</th>
+                                                    <th scope="col">Dates</th>
+                                                    <th scope="col">Time</th>
+                                                    <th scope="col">Location</th>
+                                                    <th scope="col">Organizer</th>
+                                                    <th scope="col">Description</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                 <tr>
                                                     <th>{{ item.s_no }}</th>
-                                                    <td>{{ item.name }}</td>
-                                                    <td>{{ item.blood_component }}</td>
-                                                    <td>
-                                                        {% if item.blood_group_apstv > 0 %}
-                                                            A+ : {{ item.blood_group_apstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_angtv > 0 %}
-                                                            A- : {{ item.blood_group_angtv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_bpstv > 0 %}
-                                                            B+ : {{ item.blood_group_bpstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_bngtv > 0 %}
-                                                            B- : {{ item.blood_group_bngtv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_abpstv > 0 %}
-                                                            AB+ : {{ item.blood_group_abpstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_abngtv > 0 %}
-                                                            AB- : {{ item.blood_group_abngtv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_opstv > 0 %}
-                                                            O+ : {{ item.blood_group_opstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_ongtv > 0 %}
-                                                            O- : {{ item.blood_group_ongtv }}
-                                                        {% endif %}
-                                                    </td>
+                                                    <td>{{ item.camp_name }}</td>
+                                                    <td>{{ item.state }}</td>
+                                                    <td>{{ item.city }}</td>
+                                                    <td>{{ item.start_date }} - {{ item.end_date }}</td>
+                                                    <td>{{ item.start_time }} - {{ item.end_time }}</td>
+                                                    <td>{{ item.location }}</td>
+                                                    <td>{{ item.organizer }}</td>
+                                                    <td>{{ item.description }}</td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
