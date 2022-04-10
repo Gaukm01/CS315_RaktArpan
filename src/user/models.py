@@ -34,11 +34,24 @@ class User(models.Model):
     def __str__(self):
         return str(self.user_id)
 
+class BloodCamp(models.Model):
+    camp_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default="N/A", null=True, blank=False)
+    organizer = models.CharField(max_length=100, default="N/A", null=True, blank=False)
+    start_date = models.CharField(max_length=30, default="N/A", null=True, blank=False)
+    end_date = models.CharField(max_length=30, default="N/A", null=True, blank=False)
+    start_time = models.CharField(max_length=30, default="N/A", null=True, blank=False)
+    end_time = models.CharField(max_length=30, default="N/A", null=True, blank=False)
+    location = models.CharField(max_length=100, default="N/A", null=True, blank=False)
+    description = models.CharField(max_length=400, default="N/A", null=True, blank=False)
+
+    def __str__(self):
+        return str(self.camp_id)
+
 class RBC(models.Model):
     rbc_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #blood_details = models.ForeignKey(Blood_details, on_delete=models.CASCADE)
-    #type_name =  models.CharField(max_length=120, blank=False) #platelets, WBC, RBC, other types then each each their own class.
     quantity_ABpstv = models.IntegerField(default=0, blank=False)
     quantity_ABngtv = models.IntegerField(default=0, blank=False)
     quantity_Apstv = models.IntegerField(default=0, blank=False)

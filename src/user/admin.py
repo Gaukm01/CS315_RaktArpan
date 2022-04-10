@@ -5,6 +5,7 @@ from user.models import (
     User,
     State,
     City,
+    BloodCamp,
     RBC,
     Platelets,
     Plasma,
@@ -14,6 +15,7 @@ from user.models import (
 
 admin.site.register(City)
 admin.site.register(State)
+admin.site.register(BloodCamp)
 admin.site.register(User)
 admin.site.register(RBC)
 admin.site.register(Platelets)

@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import (
+    BloodCamp,
     User,
     State,
     City,
@@ -429,3 +430,69 @@ def searchBlood(request):
                 })
             count += 1
     return render(request, "searchBlood.html",data)
+
+def blood_camp(request):
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger('myapp')
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Please login first to fill reimbursement form!")
+        return HttpResponseRedirect("/user/logout")
+    else:
+        state_object = user.state
+        city_object = user.city
+        state = State.objects.filter(state_id=state_object.state_id)
+        city = City.objects.filter(city_id=city_object.city_id)
+        logger.info(f"{state} {city}")
+        return render(
+            request,
+            "blood_camp.html",
+            {
+                "user": user,
+                "state": state,
+                "city": city,
+            },
+        )
+
+def blood_camp_form_submit(request):
+    user = IsLoggedIn(request)
+    if user is None: 
+        messages.error(request, "Please login first to submit the reimbursement form!")
+        return HttpResponseRedirect("/user/logout")
+    else: 
+        if request.method == "POST":
+            camp = BloodCamp()
+            camp.user = user
+            camp.name = request.POST.get('camp_name')
+            camp.organizer = request.POST.get('camp_organizer')
+            camp.start_date = request.POST.get('start_date')
+            camp.end_date = request.POST.get('end_date')
+            camp.start_time = request.POST.get('start_time')
+            camp.end_time = request.POST.get('end_time')
+            camp.location = request.POST.get('location')
+            camp.description = request.POST.get('description')
+            camp.save() 
+            return HttpResponseRedirect("/user/blood_bank_dashboard")
+        else:
+            return HttpResponseRedirect("/user")
+
+def donateBlood(request):
+    data = {"items": [], 
+            "states": State.objects.all()}
+    count = 1
+    for camp in BloodCamp.objects.all():
+        data["items"].append({
+            's_no': count,
+            'camp_name': camp.name,
+            'start_date': camp.start_date,
+            'end_date': camp.end_date,
+            'start_time': camp.start_time,
+            'end_time': camp.end_time,
+            'location': camp.location,
+            'description': camp.description,
+            'organizer': camp.organizer,
+            'state': camp.user.state.name,
+            'city': camp.user.city.name,
+        })
+        count += 1
+    return render(request, "donateBlood.html",data)
