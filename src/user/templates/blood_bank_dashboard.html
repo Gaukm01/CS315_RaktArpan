@@ -63,108 +63,708 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                     </button>
-                    <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Look For Blood</a>
-                    <a class="navbar-brand" href="/user/patient_dashboard/patient_profile" style="margin-right: 25px;">Profile</a>
-                    <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">New Form</a>
-                    <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Camp</a>
+                    <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
+                    <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
+                    <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
+                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ blood_bank.username }}</a></li> 
                         <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                     </ul> 
                 </div> 
             </div> 
         </div>
-
-       <div class="container container-fluid">
-            <div class="row">
-                <!-- <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> -->
-                <form method="get" action="blood_bank_dashboard">
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="state">State</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select State" autocomplete="off" name="state">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="city">City</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select City" autocomplete="off" name="city">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="blood_group">Blood Group</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select Blood Group" autocomplete="off" name="blood_group">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="blood_component">Blood Component</label>
-                            <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select Blood Component" autocomplete="off" name="blood_component">
-                        </div>
-                        <div class="col-md-offset-4 col-md-4 form-group" align="center">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </div> 
-                    </div>
-                </form>
-            </div>
-                    <div class="row">
-                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">S No.</th>
-                                                    <th scope="col">Blood Bank Name</th>
-                                                    <th scope="col">Blood Component</th>
-                                                    <th scope="col">Blood Group and Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for item in items %}
-                                                <tr>
-                                                    <th>{{ item.s_no }}</th>
-                                                    <td>{{ item.name }}</td>
-                                                    <td>{{ item.blood_component }}</td>
-                                                    <td>
-                                                        {% if item.blood_group_apstv > 0 %}
-                                                            A+ : {{ item.blood_group_apstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_angtv > 0 %}
-                                                            A- : {{ item.blood_group_angtv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_bpstv > 0 %}
-                                                            B+ : {{ item.blood_group_bpstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_bngtv > 0 %}
-                                                            B- : {{ item.blood_group_bngtv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_abpstv > 0 %}
-                                                            AB+ : {{ item.blood_group_abpstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_abngtv > 0 %}
-                                                            AB- : {{ item.blood_group_abngtv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_opstv > 0 %}
-                                                            O+ : {{ item.blood_group_opstv }}
-                                                        {% endif %}
-                                                        {% if item.blood_group_ongtv > 0 %}
-                                                            O- : {{ item.blood_group_ongtv }}
-                                                        {% endif %}
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <a href="#" class="btn btn-block btn-light">View all</a>
-                            </div>
-                        </div>
-                    </div>
-            <div class="push"></div>
+        <div class="card-header">
+            <h3>View and Update Blood Details</h3>
         </div>
+        <div class="container container-fluid">
+            <form action = "blood_bank_dashboard/update_blood_details" method = "POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h4 class="card-header">RBC Details</h4> 
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SNo.</th>
+                                                <th scope="col">Blood Type</th>
+                                                <th scope="col">Current Stock</th>
+                                                <th scope="col">Update Stock</th>
+                                                <!-- <th scope="col"></th>
+                                                <th scope="col"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1.</td>
+                                                <th scope="row"> A+ </th>
+                                                <td> {{ rbc.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_Apstv }}" class="form-control" id="rbc_quantity_Apstv"
+                                                            name="rbc_quantity_Apstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.</td>
+                                                <th scope="row"> A- </th>
+                                                <td> {{ rbc.quantity_Angtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_Angtv }}" class="form-control" id="rbc_quantity_Angtv"
+                                                            name="rbc_quantity_Angtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.</td>
+                                                <th scope="row"> B+ </th>
+                                                <td> {{ rbc.quantity_Bpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_Bpstv }}" class="form-control" id="rbc_quantity_Bpstv"
+                                                            name="rbc_quantity_Bpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.</td>
+                                                <th scope="row"> B- </th>
+                                                <td> {{ rbc.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_Bngtv }}" class="form-control" id="rbc_quantity_Bngtv"
+                                                            name="rbc_quantity_Bngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.</td>
+                                                <th scope="row"> O+ </th>
+                                                <td> {{ rbc.quantity_Opstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_Opstv }}" class="form-control" id="rbc_quantity_Opstv"
+                                                            name="rbc_quantity_Opstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.</td>
+                                                <th scope="row"> O- </th>
+                                                <td> {{ rbc.quantity_Ongtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_Ongtv }}" class="form-control" id="rbc_quantity_Ongtv"
+                                                            name="rbc_quantity_Ongtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.</td>
+                                                <th scope="row"> AB+ </th>
+                                                <td> {{ rbc.quantity_ABpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_ABpstv }}" class="form-control" id="rbc_quantity_ABpstv"
+                                                            name="rbc_quantity_ABpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.</td>
+                                                <th scope="row"> AB- </th>
+                                                <td> {{ rbc.quantity_ABngtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ rbc.quantity_ABngtv }}" class="form-control" id="rbc_quantity_ABngtv"
+                                                            name="rbc_quantity_ABngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                        </div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                    </div>
+                </div>
+                
+
+                    <!-- <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                    </div> -->
+                <!-- </div>
+                <div class="row"> -->
+                
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h4 class="card-header">Platelets Details</h4> 
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SNo.</th>
+                                                <th scope="col">Blood Type</th>
+                                                <th scope="col">Current Stock</th>
+                                                <th scope="col">Update Stock</th>
+                                                <!-- <th scope="col"></th>
+                                                <th scope="col"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1.</td>
+                                                <th scope="row"> A+ </th>
+                                                <td> {{ platelets.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_Apstv }}" class="form-control" id="platelets_quantity_Apstv"
+                                                            name="platelets_quantity_Apstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.</td>
+                                                <th scope="row"> A- </th>
+                                                <td> {{ platelets.quantity_Angtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_Angtv }}" class="form-control" id="platelets_quantity_Angtv"
+                                                            name="platelets_quantity_Angtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.</td>
+                                                <th scope="row"> B+ </th>
+                                                <td> {{ platelets.quantity_Bpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_Bpstv }}" class="form-control" id="platelets_quantity_Bpstv"
+                                                            name="platelets_quantity_Bpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.</td>
+                                                <th scope="row"> B- </th>
+                                                <td> {{ platelets.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_Bngtv }}" class="form-control" id="platelets_quantity_Bngtv"
+                                                            name="platelets_quantity_Bngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.</td>
+                                                <th scope="row"> O+ </th>
+                                                <td> {{ platelets.quantity_Opstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_Opstv }}" class="form-control" id="platelets_quantity_Opstv"
+                                                            name="platelets_quantity_Opstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.</td>
+                                                <th scope="row"> O- </th>
+                                                <td> {{ platelets.quantity_Ongtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_Ongtv }}" class="form-control" id="platelets_quantity_Ongtv"
+                                                            name="platelets_quantity_Ongtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.</td>
+                                                <th scope="row"> AB+ </th>
+                                                <td> {{ platelets.quantity_ABpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_ABpstv }}" class="form-control" id="platelets_quantity_ABpstv"
+                                                            name="platelets_quantity_ABpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.</td>
+                                                <th scope="row"> AB- </th>
+                                                <td> {{ platelets.quantity_ABngtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ platelets.quantity_ABngtv }}" class="form-control" id="platelets_quantity_ABngtv"
+                                                            name="platelets_quantity_ABngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                    </div>
+                    <!-- <hr> -->
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h4 class="card-header">Plasma Details</h4> 
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SNo.</th>
+                                                <th scope="col">Blood Type</th>
+                                                <th scope="col">Current Stock</th>
+                                                <th scope="col">Update Stock</th>
+                                                <!-- <th scope="col"></th>
+                                                <th scope="col"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1.</td>
+                                                <th scope="row"> A+ </th>
+                                                <td> {{ plasma.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_Apstv }}" class="form-control" id="plasma_quantity_Apstv"
+                                                            name="plasma_quantity_Apstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.</td>
+                                                <th scope="row"> A- </th>
+                                                <td> {{ plasma.quantity_Angtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_Angtv }}" class="form-control" id="plasma_quantity_Angtv"
+                                                            name="plasma_quantity_Angtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.</td>
+                                                <th scope="row"> B+ </th>
+                                                <td> {{ plasma.quantity_Bpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_Bpstv }}" class="form-control" id="plasma_quantity_Bpstv"
+                                                            name="plasma_quantity_Bpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.</td>
+                                                <th scope="row"> B- </th>
+                                                <td> {{ plasma.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_Bngtv }}" class="form-control" id="plasma_quantity_Bngtv"
+                                                            name="plasma_quantity_Bngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.</td>
+                                                <th scope="row"> O+ </th>
+                                                <td> {{ plasma.quantity_Opstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_Opstv }}" class="form-control" id="plasma_quantity_Opstv"
+                                                            name="plasma_quantity_Opstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.</td>
+                                                <th scope="row"> O- </th>
+                                                <td> {{ plasma.quantity_Ongtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_Ongtv }}" class="form-control" id="plasma_quantity_Ongtv"
+                                                            name="plasma_quantity_Ongtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.</td>
+                                                <th scope="row"> AB+ </th>
+                                                <td> {{ plasma.quantity_ABpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_ABpstv }}" class="form-control" id="plasma_quantity_ABpstv"
+                                                            name="plasma_quantity_ABpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.</td>
+                                                <th scope="row"> AB- </th>
+                                                <td> {{ plasma.quantity_ABngtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ plasma.quantity_ABngtv }}" class="form-control" id="plasma_quantity_ABngtv"
+                                                            name="plasma_quantity_ABngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h4 class="card-header">CryoAHF Details</h4> 
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SNo.</th>
+                                                <th scope="col">Blood Type</th>
+                                                <th scope="col">Current Stock</th>
+                                                <th scope="col">Update Stock</th>
+                                                <!-- <th scope="col"></th>
+                                                <th scope="col"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1.</td>
+                                                <th scope="row"> A+ </th>
+                                                <td> {{ cryo_ahf.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_Apstv }}" class="form-control" id="cryo_ahf_quantity_Apstv"
+                                                            name="cryo_ahf_quantity_Apstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.</td>
+                                                <th scope="row"> A- </th>
+                                                <td> {{ cryo_ahf.quantity_Angtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_Angtv }}" class="form-control" id="cryo_ahf_quantity_Angtv"
+                                                            name="cryo_ahf_quantity_Angtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.</td>
+                                                <th scope="row"> B+ </th>
+                                                <td> {{ cryo_ahf.quantity_Bpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_Bpstv }}" class="form-control" id="cryo_ahf_quantity_Bpstv"
+                                                            name="cryo_ahf_quantity_Bpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.</td>
+                                                <th scope="row"> B- </th>
+                                                <td> {{ cryo_ahf.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_Bngtv }}" class="form-control" id="cryo_ahf_quantity_Bngtv"
+                                                            name="cryo_ahf_quantity_Bngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.</td>
+                                                <th scope="row"> O+ </th>
+                                                <td> {{ cryo_ahf.quantity_Opstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_Opstv }}" class="form-control" id="cryo_ahf_quantity_Opstv"
+                                                            name="cryo_ahf_quantity_Opstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.</td>
+                                                <th scope="row"> O- </th>
+                                                <td> {{ cryo_ahf.quantity_Ongtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_Ongtv }}" class="form-control" id="cryo_ahf_quantity_Ongtv"
+                                                            name="cryo_ahf_quantity_Ongtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.</td>
+                                                <th scope="row"> AB+ </th>
+                                                <td> {{ cryo_ahf.quantity_ABpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_ABpstv }}" class="form-control" id="cryo_ahf_quantity_ABpstv"
+                                                            name="cryo_ahf_quantity_ABpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.</td>
+                                                <th scope="row"> AB- </th>
+                                                <td> {{ cryo_ahf.quantity_ABngtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ cryo_ahf.quantity_ABngtv }}" class="form-control" id="cryo_ahf_quantity_ABngtv"
+                                                            name="cryo_ahf_quantity_ABngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                    </div>
+                    <!-- <hr> -->
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h4 class="card-header">Granulocytes Details</h4> 
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">SNo.</th>
+                                                <th scope="col">Blood Type</th>
+                                                <th scope="col">Current Stock</th>
+                                                <th scope="col">Update Stock</th>
+                                                <!-- <th scope="col"></th>
+                                                <th scope="col"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1.</td>
+                                                <th scope="row"> A+ </th>
+                                                <td> {{ granulocytes.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_Apstv }}" class="form-control" id="granulocytes_quantity_Apstv"
+                                                            name="granulocytes_quantity_Apstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2.</td>
+                                                <th scope="row"> A- </th>
+                                                <td> {{ granulocytes.quantity_Angtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_Angtv }}" class="form-control" id="granulocytes_quantity_Angtv"
+                                                            name="granulocytes_quantity_Angtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3.</td>
+                                                <th scope="row"> B+ </th>
+                                                <td> {{ granulocytes.quantity_Bpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_Bpstv }}" class="form-control" id="granulocytes_quantity_Bpstv"
+                                                            name="granulocytes_quantity_Bpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4.</td>
+                                                <th scope="row"> B- </th>
+                                                <td> {{ granulocytes.quantity_Apstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_Bngtv }}" class="form-control" id="granulocytes_quantity_Bngtv"
+                                                            name="granulocytes_quantity_Bngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>5.</td>
+                                                <th scope="row"> O+ </th>
+                                                <td> {{ granulocytes.quantity_Opstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_Opstv }}" class="form-control" id="granulocytes_quantity_Opstv"
+                                                            name="granulocytes_quantity_Opstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6.</td>
+                                                <th scope="row"> O- </th>
+                                                <td> {{ granulocytes.quantity_Ongtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_Ongtv }}" class="form-control" id="granulocytes_quantity_Ongtv"
+                                                            name="granulocytes_quantity_Ongtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>7.</td>
+                                                <th scope="row"> AB+ </th>
+                                                <td> {{ granulocytes.quantity_ABpstv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_ABpstv }}" class="form-control" id="granulocytes_quantity_ABpstv"
+                                                            name="granulocytes_quantity_ABpstv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>8.</td>
+                                                <th scope="row"> AB- </th>
+                                                <td> {{ granulocytes.quantity_ABngtv }} </td>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group col-md-3">
+                                                        <input type='number' min='0' step='1' value="{{ granulocytes.quantity_ABngtv }}" class="form-control" id="granulocytes_quantity_ABngtv"
+                                                            name="granulocytes_quantity_ABngtv" placeholder="New Quantity"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-success btn-block">Update Details</button>
+                    </div>
+                    <div></div>
+                    <!-- <hr> -->
+                </div>
+               
+            </div>
+            </form>
+        </div>
+        
 		<footer class = "navbar-fixed-bottom">
             <div class="container"> 
                 <center> 

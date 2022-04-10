@@ -13,5 +13,9 @@ urlpatterns = [
     path("blood_bank_dashboard",views.blood_bank_dashboard, name="blood_bank_dashboard"),
     path("getdetails", views.getdetails, name="getdetails"),
     path("blood_bank_dashboard/blood_camp", views.blood_camp, name="blood_camp"),
-    path("blood_bank_dashboard/blood_camp/formsubmit", views.blood_camp_form_submit, name="blood_camp_form_submit")
+    path("blood_bank_dashboard/blood_camp/formsubmit", views.blood_camp_form_submit, name="blood_camp_form_submit"),
+    path("blood_bank_dashboard/blood_bank_profile", views.blood_bank_profile, name="blood_bank_profile"),
+    path("blood_bank_dashboard/blood_bank_profile/update_blood_bank_profile", views.update_blood_bank_profile, name="update_blood_bank_profile"),
+    path("blood_bank_dashboard/update_blood_details", views.update_blood_details, name="update_blood_details"),
+
 ]
