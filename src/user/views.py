@@ -96,8 +96,8 @@ def register_blood_bank(request):
             password2 = request.POST.get("conf_password")
             address = request.POST.get("address")
             contact = request.POST.get("contact")
-            city = City.objects.get(city_id=request.POST.get("city"))
-            state = State.objects.get(state_id=request.POST.get("state"))
+            city = City.objects.get(name=request.POST.get("city"))
+            state = State.objects.get(name=request.POST.get("state"))
             if(city.state != state) :
                 messages.error(request, "City is not present in given state!")
                 return HttpResponseRedirect("/user/signup")
@@ -240,8 +240,8 @@ def blood_bank(request):
     )
 
 def blood_bank_dashboard(request):
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger('myapp')
+    # logging.basicConfig(level=logging.INFO)
+    # logger = logging.getLogger('myapp')
     user = IsLoggedIn(request)
     if user is None: # not already logged in 
         messages.error(request, "Kindly login to view the page!")
@@ -279,7 +279,6 @@ def blood_bank_dashboard(request):
                         data["granulocytes"]= g
                         break
                 break
-        logger.info(f" {data['rbc'].quantity_Apstv}")
         return render(request, "blood_bank_dashboard.html",data)
 
 def getdetails(request):
@@ -292,12 +291,11 @@ def getdetails(request):
     for city in City.objects.all():
         if city.state == state_object: 
             result_set.append({'id': city.city_id, 'name': city.name})
-    logger.info(f"{result_set[0]['name']}")
     return HttpResponse(simplejson.dumps(result_set), content_type="application/json")
 
 def searchBlood(request):
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger('myapp')
+    # logging.basicConfig(level=logging.INFO)
+    # logger = logging.getLogger('myapp')
     data = {"items": [], 
             "blood_groups": ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'], 
             "blood_components": ['RBC', 'Plasma', "Platelets", "Cryo AHF", "Granulocytes"],
@@ -307,16 +305,19 @@ def searchBlood(request):
         city_ = request.GET.get("city")
         blood_group_ = request.GET.get("blood_group")
         blood_component_ = request.GET.get("blood_component")
-        # logger.info(f"{state_}")
-        # logger.info(f"{city_}")
-        # logger.info(f"{blood_group_}")
-        # logger.info(f"{blood_component_}")
+        for t in State.objects.all():
+            if t.name == state_:
+                state_object = t
+                break
+        for c in City.objects.all():
+            if c.name == city_:
+                city_object = c
+                break
         count = 1
         for t in User.objects.all():
-            logger.info(f"{state_} {t.state}")
-            if state_ != '' and t.state != state_:
+            if t.state != state_object:
                 continue
-            if city_ != '' and t.city != city_:
+            if t.city != city_object:
                 continue
             if (blood_component_ == '' or blood_component_ == "RBC") and RBC.objects.filter(user=t).exists():
                 rbc = RBC.objects.get(user=t)
@@ -442,8 +443,8 @@ def searchBlood(request):
     return render(request, "searchBlood.html",data)
 
 def blood_camp(request):
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger('myapp')
+    # logging.basicConfig(level=logging.INFO)
+    # logger = logging.getLogger('myapp')
     user = IsLoggedIn(request)
     if user is None: # not already logged in 
         messages.error(request, "Please login first to fill reimbursement form!")
@@ -489,23 +490,39 @@ def blood_camp_form_submit(request):
 def donateBlood(request):
     data = {"items": [], 
             "states": State.objects.all()}
-    count = 1
-    for camp in BloodCamp.objects.all():
-        data["items"].append({
-            's_no': count,
-            'camp_name': camp.name,
-            'start_date': camp.start_date,
-            'end_date': camp.end_date,
-            'start_time': camp.start_time,
-            'end_time': camp.end_time,
-            'location': camp.location,
-            'description': camp.description,
-            'organizer': camp.organizer,
-            'state': camp.user.state.name,
-            'city': camp.user.city.name,
-        })
-        count += 1
-    return render(request, "donateBlood.html",data)
+    if request.method == "GET":
+        state_ = request.GET.get("state")
+        city_ = request.GET.get("city")
+        logger.info(f"{state_} {city_}")
+        state_object = 0
+        city_object = 0
+        for t in State.objects.all():
+            if t.name == state_:
+                state_object = t
+                break
+        for c in City.objects.all():
+            if c.name == city_:
+                city_object = c
+                break
+        logger.info(f"{state_object} {city_object}")
+        count = 1
+        for camp in BloodCamp.objects.all():
+            if camp.user.state == state_object and camp.user.city == city_object:
+                data["items"].append({
+                    's_no': count,
+                    'camp_name': camp.name,
+                    'start_date': camp.start_date,
+                    'end_date': camp.end_date,
+                    'start_time': camp.start_time,
+                    'end_time': camp.end_time,
+                    'location': camp.location,
+                    'description': camp.description,
+                    'organizer': camp.organizer,
+                    'state': camp.user.state.name,
+                    'city': camp.user.city.name,
+                })
+                count += 1
+        return render(request, "donateBlood.html",data)
 def blood_bank_profile(request):
     user = IsLoggedIn(request)
     if user is None:

@@ -101,14 +101,11 @@
 
        <div class="container container-fluid">
             <div class="row">
-                <!-- <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4"> -->
                 <form method="get" action="searchBlood">
                     {% csrf_token %}
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="state">State</label>
-                            <!-- <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select State" autocomplete="off" name="state"> -->
 
                             <select id="select_state" class="form-control" name="state">
                                 <option value=''>----------</option>
@@ -120,8 +117,6 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="city">City</label>
-                            <!-- <input type="text" class="form-control" id="specialisation"
-                                placeholder="Select City" autocomplete="off" name="city"> -->
                             <select name ="city" id="select_city" class="form-control">
                                 <option value=''>----------</option>
                             </select>
