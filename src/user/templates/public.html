@@ -13,6 +13,11 @@
 		<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
 		<script src="{% static 'js/bootstrap.min.js' %}"></script>
         <style>
+            body {
+                background: rgb(233,176,162);
+                background: linear-gradient(351deg, rgba(233,176,162,1) 24%, rgba(249,231,232,1) 89%);
+            }
+
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -37,6 +42,14 @@
         
             .navbar {
                 box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+            }
+
+            .navbar-inverse {
+                background-color: #E74C3C;
+            }
+
+            .navbar-inverse .navbar-brand {
+                color: #2E4053;
             }
         
             @media (min-width: 767.98px) {

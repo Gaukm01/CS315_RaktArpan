@@ -13,6 +13,11 @@
 		<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
 		<script src="{% static 'js/bootstrap.min.js' %}"></script>
         <style>
+            body {
+                background: rgb(233,176,162);
+                background: linear-gradient(351deg, rgba(233,176,162,1) 24%, rgba(249,231,232,1) 89%);
+            }
+
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -41,6 +46,21 @@
                     position: sticky;
                     z-index: 999;
                 }
+            }
+            .btn{
+                background-color: #E74C3C;
+                color: #2E4053;
+            }
+            .btn:hover{
+                color: #fff;
+            }
+
+            .navbar-inverse {
+                background-color: #E74C3C;
+            }
+
+            .navbar-inverse .navbar-brand {
+                color: #2E4053;
             }
         
             .sidebar .nav-link {
@@ -121,7 +141,7 @@
                             </select>
                         </div>
                         <div class="col-md-offset-4 col-md-4 form-group" align="center">
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn">Search</button>
                         </div> 
                     </div>
                 </form>
@@ -162,7 +182,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                <a href="#" class="btn btn-block btn-light">View all</a>
                             </div>
                         </div>
                     </div>
