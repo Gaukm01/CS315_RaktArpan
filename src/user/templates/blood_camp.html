@@ -35,10 +35,17 @@
             .navbar-inverse .navbar-brand {
                 color: #fff;
             }
+            .card-header-1{
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            
+            }
             body {
                 background: rgb(237,237,237);
-background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1) 100%);
+                background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1) 100%);
             }
+
     </style>
 </head>
 
@@ -51,13 +58,13 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span> 
                 </button>
-                <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
+                <!-- <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a> -->
                 <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
                 <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar"> 
                 <ul class="nav navbar-nav navbar-right"> 
-                    <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ blood_bank.username }}</a></li> 
+                    <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ user.username }}</a></li> 
                     <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                 </ul> 
             </div> 
@@ -75,7 +82,10 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                         <li class="breadcrumb-item active" aria-current="page">New Form</li>
                     </ol>
                 </nav>
-                <h1 style="margin-top:50px;margin-left: 475px;">Blood Camp Form</h1>
+                <div class="card-header-1">
+                    <h1>Blood Camp Form</h1>
+                </div>
+                
                 <section>
                     <div class="container">
                         <h4 style="line-height: 50px;"><strong>Blood Bank Details</strong></h4>

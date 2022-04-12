@@ -464,6 +464,7 @@ def blood_camp(request):
                 "user": user,
                 "state": state,
                 "city": city,
+                
             },
         )
 

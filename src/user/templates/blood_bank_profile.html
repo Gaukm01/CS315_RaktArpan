@@ -18,6 +18,11 @@
             background: rgb(237,237,237);
 background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1) 100%);
             }
+        
+        .form-group {
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
 
         .sidebar {
             position: fixed;
@@ -36,7 +41,19 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                 padding: 0;
             }
         }
-
+        .panel-danger>.panel-heading {
+            color: #f6f2f2;
+            background-color: #f34343;
+            border-color: #ebccd1;
+            
+        }
+        .panel-danger {
+            
+            border-color: #ebccd1;
+            /* width: 775px; */
+            /* padding-right: 10px; */
+            /* margin-right: 10px; */
+        }
         .navbar {
             box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
         }
@@ -70,7 +87,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                color: #E74C3C;
+                color: #181717;
             }
             .btn{
                 background-color: #E74C3C;
@@ -93,7 +110,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span> 
                 </button>
-                <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
+                <a class="navbar-brand" href="/user/blood_bank_dashboard" style="margin-right: 25px;">Home</a>
                 <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
                 <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
             </div>

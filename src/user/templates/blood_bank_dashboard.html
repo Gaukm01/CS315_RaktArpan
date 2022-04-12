@@ -93,7 +93,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                     </button>
-                    <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
+                    <a class="navbar-brand" href="/user/logout" style="margin-right: 25px;">RaktKosh</a>
                     <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
                     <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
                 </div>
@@ -106,7 +106,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
             </div> 
         </div>
         <div class="card-header-1">
-            <h3>View and Update Blood Details</h3>
+            <h1>View and Update Blood Details</h1>
         </div>
         <div class="container container-fluid">
             <form action = "blood_bank_dashboard/update_blood_details" method = "POST">
@@ -114,7 +114,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                 <div class="row">
                     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                         <div class="card">
-                            <h4 class="card-header">RBC Details</h4> 
+                            <h3 class="card-header">RBC Details</h3> 
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -123,7 +123,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <th scope="col">SNo.</th>
                                                 <th scope="col">Blood Type</th>
                                                 <th scope="col">Current Stock</th>
-                                                <th scope="col">Update Stock</th>
+                                                <th scope="col">   Update Stock</th>
                                                 <!-- <th scope="col"></th>
                                                 <th scope="col"></th> -->
                                             </tr>
@@ -133,7 +133,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <td>1.</td>
                                                 <th scope="row"> A+ </th>
                                                 <td> {{ rbc.quantity_Apstv }} </td>
-                                                </td>
+                                                
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_Apstv }}" class="form-control" id="rbc_quantity_Apstv"
@@ -146,7 +146,6 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <td>2.</td>
                                                 <th scope="row"> A- </th>
                                                 <td> {{ rbc.quantity_Angtv }} </td>
-                                                </td>
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_Angtv }}" class="form-control" id="rbc_quantity_Angtv"
@@ -171,8 +170,8 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                             <tr>
                                                 <td>4.</td>
                                                 <th scope="row"> B- </th>
-                                                <td> {{ rbc.quantity_Apstv }} </td>
-                                                </td>
+                                                <td> {{ rbc.quantity_Bngtv }} </td>
+                                                
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_Bngtv }}" class="form-control" id="rbc_quantity_Bngtv"
@@ -185,7 +184,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <td>5.</td>
                                                 <th scope="row"> O+ </th>
                                                 <td> {{ rbc.quantity_Opstv }} </td>
-                                                </td>
+                                                
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_Opstv }}" class="form-control" id="rbc_quantity_Opstv"
@@ -198,7 +197,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <td>6.</td>
                                                 <th scope="row"> O- </th>
                                                 <td> {{ rbc.quantity_Ongtv }} </td>
-                                                </td>
+                                                
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_Ongtv }}" class="form-control" id="rbc_quantity_Ongtv"
@@ -211,7 +210,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <td>7.</td>
                                                 <th scope="row"> AB+ </th>
                                                 <td> {{ rbc.quantity_ABpstv }} </td>
-                                                </td>
+                                                
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_ABpstv }}" class="form-control" id="rbc_quantity_ABpstv"
@@ -224,7 +223,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                 <td>8.</td>
                                                 <th scope="row"> AB- </th>
                                                 <td> {{ rbc.quantity_ABngtv }} </td>
-                                                </td>
+                                                
                                                 <td>
                                                     <div class="form-group col-md-3">
                                                         <input type='number' min='0' step='1' value="{{ rbc.quantity_ABngtv }}" class="form-control" id="rbc_quantity_ABngtv"
@@ -240,12 +239,12 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
 
                         </div>
                     </div>
-                    <!-- <hr> -->
-                    <div class="form-group col-md-12">
+                   
+                    <div class="form-group col-md-3 col-md-offset-4">
                         <button type="submit" class="btn btn-block">Update Details</button>
                     </div>
                 </div>
-                
+                <hr>
 
                     <!-- <div class="form-group col-md-12">
                         <button type="submit" class="btn btn-success btn-block">Update Details</button>
@@ -256,7 +255,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                 <div class="row">
                     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                         <div class="card">
-                            <h4 class="card-header">Platelets Details</h4> 
+                            <h3 class="card-header">Platelets Details</h3> 
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -374,23 +373,21 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                                                             autocomplete="off" required>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                            
+                                            </tr>             
                                         </tbody>
                                     </table>
                                 </div>
-
                         </div>
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-3 col-md-offset-4">
                         <button type="submit" class="btn btn-block">Update Details</button>
                     </div>
-                    <!-- <hr> -->
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                         <div class="card">
-                            <h4 class="card-header">Plasma Details</h4> 
+                            <h3 class="card-header">Plasma Details</h3> 
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -516,14 +513,15 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
 
                         </div>
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-3 col-md-offset-4">
                         <button type="submit" class="btn btn-block">Update Details</button>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                         <div class="card">
-                            <h4 class="card-header">CryoAHF Details</h4> 
+                            <h3 class="card-header">CryoAHF Details</h3> 
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -649,15 +647,16 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
 
                         </div>
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-3 col-md-offset-4">
                         <button type="submit" class="btn btn-block">Update Details</button>
                     </div>
                     <!-- <hr> -->
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                         <div class="card">
-                            <h4 class="card-header">Granulocytes Details</h4> 
+                            <h3 class="card-header">Granulocytes Details</h3> 
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -784,7 +783,7 @@ background: radial-gradient(circle, rgba(237,237,237,1) 59%, rgba(255,245,245,1)
                         </div>
                     </div>
                     
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-3 col-md-offset-4">
                         <button type="submit" class="btn btn-block">Update Details</button>
                     </div>
                     <div></div>
