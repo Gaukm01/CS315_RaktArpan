@@ -66,9 +66,8 @@ a:visited {
 }
 
 footer {
-    
-    background-color: #101010;
-    color: #9d9d9d;
+    background-color: none;
+    color: #333;
     padding: 10px 0;
     height: 50px;
     width: 100%;

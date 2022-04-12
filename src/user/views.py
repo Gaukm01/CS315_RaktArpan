@@ -305,7 +305,7 @@ def searchBlood(request):
         city_ = request.GET.get("city")
         blood_group_ = request.GET.get("blood_group")
         blood_component_ = request.GET.get("blood_component")
-        state_object=-1
+        state_object = -1
         city_object = -1
         for t in State.objects.all():
             if t.name == state_:

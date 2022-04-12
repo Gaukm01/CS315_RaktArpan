@@ -17,26 +17,47 @@
         #description{
             height:200px;
         }
+        .btn{
+                background-color: #E74C3C;
+                color: #2E4053;
+            }
+
+            .btn:hover{
+                color: #fff;
+            }
+            .navbar-inverse {
+                background-color: #E74C3C;
+            }
+            .navbar-inverse .navbar-nav>li>a {
+                color: #2E4053;
+            }
+
+            .navbar-inverse .navbar-brand {
+                color: #2E4053;
+            }
+            body {
+                background: rgb(233,176,162);
+                background: linear-gradient(351deg, rgba(233,176,162,1) 24%, rgba(249,231,232,1) 89%);
+            }
     </style>
 </head>
 
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top"> 
-        <div class="container"> 
+        <div class="container navbar-1"> 
             <div class="navbar-header"> 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span> 
                 </button>
-                <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Look For Blood</a>
-                <a class="navbar-brand" href="/user/patient_dashboard/patient_profile" style="margin-right: 25px;">Profile</a>
-                <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">New Form</a>
-                <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Camp</a>
+                <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
+                <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
+                <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar"> 
                 <ul class="nav navbar-nav navbar-right"> 
-                    <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
+                    <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ blood_bank.username }}</a></li> 
                     <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                 </ul> 
             </div> 
@@ -54,7 +75,7 @@
                         <li class="breadcrumb-item active" aria-current="page">New Form</li>
                     </ol>
                 </nav>
-                <h1 style="margin-top:50px;margin-left: 320px;">Blood Camp Form</h1>
+                <h1 style="margin-top:50px;margin-left: 475px;">Blood Camp Form</h1>
                 <section>
                     <div class="container">
                         <h4 style="line-height: 50px;"><strong>Blood Bank Details</strong></h4>

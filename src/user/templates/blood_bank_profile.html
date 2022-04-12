@@ -14,6 +14,11 @@
     <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <style>
+        body {
+                background: rgb(233,176,162);
+                background: linear-gradient(351deg, rgba(233,176,162,1) 24%, rgba(249,231,232,1) 89%);
+            }
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -51,22 +56,45 @@
         .sidebar .nav-link.active {
             color: #0d6efd;
         }
+        .navbar-inverse {
+            background-color: #E74C3C;
+        }
+        .navbar-inverse .navbar-nav>li>a {
+            color: #2E4053;
+        }
+
+        .navbar-inverse .navbar-brand {
+            color: #2E4053;
+        }
+        .card-header-1{
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color: #E74C3C;
+            }
+            .btn{
+                background-color: #E74C3C;
+                color: #2E4053;
+            }
+
+            .btn:hover{
+                color: #fff;
+            }
     </style>
 </head>
 
 <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top"> 
-        <div class="container"> 
+        <div class="container navbar-1"> 
             <div class="navbar-header"> 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span> 
                 </button>
-                <a class="navbar-brand" href="/user/blood_bank_dashboard" style="margin-right: 25px;">Dashboard</a>
                 <a class="navbar-brand" href="/user/searchBlood" style="margin-right: 25px;">Look For Blood</a>
-                <!--a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a-->
+                <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_bank_profile" style="margin-right: 25px;">Profile</a>
                 <a class="navbar-brand" href="/user/blood_bank_dashboard/blood_camp" style="margin-right: 25px;">Add Blood Camp</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar"> 
@@ -81,12 +109,6 @@
     <div class="container container-fluid">
         <div class="row">
             <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
-                    </ol>
-                </nav>
                 {% if messages %}
                 {% for message in messages %}
                 {% if message.tags %}
@@ -102,7 +124,7 @@
                 {% endif %} 
                 {% endfor %}
                 {% else %}
-                <div class="panel panel-primary">
+                <div class="panel panel-danger">
                     <div class="panel-heading">
                         <h4><strong>View Profile</strong></h4>
                     </div>
@@ -141,7 +163,7 @@
                     </div>
                 </div>
 
-                <h1 class="h2">Update Profile</h1>
+                <h1 class="h2 card-header-1">Update Profile</h1>
                 <div class="container container-fluid">
                     <form action = "blood_bank_profile/update_blood_bank_profile" method = "POST">
                         {% csrf_token %}
@@ -153,7 +175,7 @@
 
                     </div>
                         <div class="form-group col-md-12">
-                            <button type="submit" class="btn btn-success btn-block">Update</button>
+                            <button type="submit" class="btn btn-block">Update</button>
                         </div>
                 </form>
 
