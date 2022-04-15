@@ -317,9 +317,9 @@ def searchBlood(request):
                 break
         count = 1
         for t in User.objects.all():
-            if t.state != state_object:
+            if state_object != -1 and t.state != state_object:
                 continue
-            if t.city != city_object:
+            if city_object != -1 and t.city != city_object:
                 continue
             if (blood_component_ == '' or blood_component_ == "RBC") and RBC.objects.filter(user=t).exists():
                 rbc = RBC.objects.get(user=t)
@@ -497,8 +497,8 @@ def donateBlood(request):
         state_ = request.GET.get("state")
         city_ = request.GET.get("city")
         logger.info(f"{state_} {city_}")
-        state_object = 0
-        city_object = 0
+        state_object = -1
+        city_object = -1
         for t in State.objects.all():
             if t.name == state_:
                 state_object = t
@@ -510,7 +510,7 @@ def donateBlood(request):
         logger.info(f"{state_object} {city_object}")
         count = 1
         for camp in BloodCamp.objects.all():
-            if camp.user.state == state_object and camp.user.city == city_object:
+            if (state_object == -1 or camp.user.state == state_object) and (city_object == -1 or camp.user.city == city_object):
                 data["items"].append({
                     's_no': count,
                     'camp_name': camp.name,
