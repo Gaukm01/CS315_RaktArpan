@@ -1,5 +1,5 @@
-# CS315_RaktKosh
-CS315 Course Project on Blood Bank Managament System RAKTKOSH
+# CS315_RaktArpan
+CS315 Course Project on Blood Bank Managament System RAKTARPAN
 
 ## Setup
 
@@ -10,3 +10,5 @@ CS315 Course Project on Blood Bank Managament System RAKTKOSH
 5. To deploy the project ``` cd src ``` ```python manage.py runserver PORT (default 8000) ```
 6. If getting error of ``` bycrpyt not found ``` use command ``` pip3 install py-bycrypt ```
 7. To create a superuser to access django backend server ``` cd src ``` ```python manage.py createsuperuser```
+
+  
