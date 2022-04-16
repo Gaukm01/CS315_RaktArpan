@@ -696,4 +696,3 @@ def update_blood_details(request):
         else:
             messages.error(request, "Kindly login to view the page!")
             return HttpResponseRedirect("/user")
-
