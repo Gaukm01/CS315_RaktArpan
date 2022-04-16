@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>HC Reimbursement Portal</title>
+    <title>RaktArpan</title>
     <meta charset="utf-8">
     <meta name='viewport' content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -193,69 +193,11 @@
         <div class="container">
             <center>
                 <p>
-                    Copyright &copy; HC Reimbursement Portal All Rights Reserved | Contact Team-6.
+                    Copyright &copy; RaktArpan All Rights Reserved | Contact Gaurav & Nibir.
                 </p>
             </center>
         </div>
     </footer>
-    <script type="text/javascript">
-        function create_med_row(id) {
-            var num = document.getElementById(id).value
-            var str = "";
-            if (Number(num) >= 1) str += '<label for="atle">Medicines and their quantities and respective costs</label>';
-            for (row = 1; row <= Number(num); row++) {
-                str += '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-' + row.toString() + '" name="medicine-' + row.toString() + '" onchange="setPrice(this.options[this.selectedIndex].id, ' + row.toString() + '); setTotPrice();"><option id="" value = "">Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input required type="number" class="form-control" placeholder="Quantity" id="quantity-' + row.toString() + '" name="quantity-' + row.toString() + '"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input required type="text" class="form-control" placeholder="Price (in Rs.)" name="price-' + row.toString() + '" id="price-' + row.toString() + '" disabled></div></center></div></div>';
-            }
-            document.getElementById("newinput").innerHTML = str;
-        };
-
-        function create_test_row(id) {
-            var num = document.getElementById(id).value
-            var str = "";
-            if (Number(num) >= 1) str += '<label for="atle">Pathological tests and their respective costs</label>';
-            for (row = 1; row <= Number(num); row++) {
-                str += '<div class="form-row" id="atle"><center><div class="form-group col-md-4"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-' + row.toString() + '" name="test-' + row.toString() + '" autocomplete="off"><option id = "" value = "">Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input required  type="text" class="form-control" placeholder="Laboratory" name="lab-' + row.toString() + '" autocomplete="off"></div><div class="form-group col-md-2"><input type="number" min = "0.00" step="0.01" class="form-control" placeholder="Charges (in Rs.)" id="charge-' + row.toString() + '" name="charge-' + row.toString() + '" onchange="setTotalCharge();" autocomplete="off" required></div></center></div>';
-            }
-            document.getElementById("newinput2").innerHTML = str;
-        };
-    </script>
-    <script>
-        function setSpecialization(specialization) {
-            document.getElementById("specialisation").value = specialization;
-            document.getElementById("con_date").disabled = false;
-        };
-        function setPrice(price, id) {
-            prev_value = document.getElementById("price-" + id).value;
-            document.getElementById("price-" + id).value = price;
-            document.getElementById("quantity-" + id).disabled = false;
-            document.getElementById("quantity-" + id).value = 1;
-        }
-        function setTotPrice() {
-            var row = document.querySelectorAll('[id^=price-]'), i;
-            var totPrice = 0;
-            for (i = 1; i <= row.length; i++) {
-                totPrice += Number(document.getElementById("quantity-" + i).value) * Number(document.getElementById("price-" + i).value);
-            }
-            document.getElementById("tot-price").value = parseFloat(String(totPrice)).toFixed(2);
-            setTotal();
-        }
-        function setTotalCharge() {
-            var row = document.querySelectorAll('[id^=charge-]'), i;
-            var totPrice = 0;
-            for (i = 1; i <= row.length; i++) {
-                totPrice += Number(document.getElementById("charge-" + i).value);
-            }
-            document.getElementById("tot-charge").value = parseFloat(String(totPrice)).toFixed(2);
-            setTotal();
-        }
-        function setTotal() {
-            var con = Number(document.getElementById("con-charge").value) * Number(document.getElementById("visits").value);
-            var price = Number(document.getElementById("tot-price").value);
-            var charge = Number(document.getElementById("tot-charge").value);
-            var total = con + price + charge;
-            document.getElementById("total").value = parseFloat(String(total)).toFixed(2);
-        }
-    </script>
     <script>
         var today = new Date();
         var dd = today.getDate();

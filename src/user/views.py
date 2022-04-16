@@ -299,7 +299,8 @@ def searchBlood(request):
     data = {"items": [], 
             "blood_groups": ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'], 
             "blood_components": ['RBC', 'Plasma', "Platelets", "Cryo AHF", "Granulocytes"],
-            "states": State.objects.all()}
+            "states": State.objects.all(),
+            "start": 1}
     if request.method == "GET":
         state_ = request.GET.get("state")
         city_ = request.GET.get("city")
@@ -345,6 +346,8 @@ def searchBlood(request):
                     'blood_group_abngtv' : h,
                     'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
+                if (a + b + c + d + e + f + g + h > 0):
+                    count += 1
             if (blood_component_ == '' or blood_component_ == "Plasma") and Plasma.objects.filter(user=t).exists():
                 plasma = Plasma.objects.get(user=t)
                 a = plasma.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
@@ -369,6 +372,8 @@ def searchBlood(request):
                     'blood_group_abngtv' : h,
                     'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
+                if (a + b + c + d + e + f + g + h > 0):
+                    count += 1
             if (blood_component_ == '' or blood_component_ == "Platelets") and Platelets.objects.filter(user=t).exists():
                 platelets = Platelets.objects.get(user=t)
                 a = platelets.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
@@ -393,6 +398,8 @@ def searchBlood(request):
                     'blood_group_abngtv' : h,
                     'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
+                if (a + b + c + d + e + f + g + h > 0):
+                    count += 1
             if (blood_component_ == '' or blood_component_ == "Cryo AHF") and CryoAHF.objects.filter(user=t).exists():
                 cryo_ahf = CryoAHF.objects.get(user=t)
                 a = cryo_ahf.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
@@ -417,6 +424,8 @@ def searchBlood(request):
                     'blood_group_abngtv' : h,
                     'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
+                if (a + b + c + d + e + f + g + h > 0):
+                    count += 1
             if (blood_component_ == '' or blood_component_ == "Granulocytes") and Granulocytes.objects.filter(user=t).exists():
                 granulocytes = Granulocytes.objects.get(user=t)
                 a = granulocytes.quantity_Apstv if (blood_group_ == '' or blood_group_ == 'A+') else 0
@@ -441,14 +450,15 @@ def searchBlood(request):
                     'blood_group_abngtv' : h,
                     'flag' : 1 if (a + b + c + d + e + f + g + h > 0) else 0
                 })
-            count += 1
+                if (a + b + c + d + e + f + g + h > 0):
+                    count += 1
     return render(request, "searchBlood.html",data)
 
 def blood_camp(request):
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger('myapp')
     user = IsLoggedIn(request)
-    if user is None: # not already logged in 
+    if user is None:
         messages.error(request, "Please login first to fill reimbursement form!")
         return HttpResponseRedirect("/user/logout")
     else:
@@ -492,7 +502,8 @@ def blood_camp_form_submit(request):
 
 def donateBlood(request):
     data = {"items": [], 
-            "states": State.objects.all()}
+            "states": State.objects.all(),
+            "start": 1}
     if request.method == "GET":
         state_ = request.GET.get("state")
         city_ = request.GET.get("city")
@@ -514,6 +525,7 @@ def donateBlood(request):
                 data["items"].append({
                     's_no': count,
                     'camp_name': camp.name,
+                    'blood_bank_name': camp.user.blood_bank_name,
                     'start_date': camp.start_date,
                     'end_date': camp.end_date,
                     'start_time': camp.start_time,
